@@ -1,4 +1,10 @@
-DOMAIN-SUFFIX,gitlab-assets.oss-cn-hongkong.aliyuncs.com,DIRECT
+DOMAIN-SUFFIX,apps.apple.com,DIRECT
+DOMAIN-SUFFIX,itunes.apple.com,DIRECT
+DOMAIN-SUFFIX,mzstatic.com,DIRECT
+DOMAIN,itunes.apple.com,DIRECT
+DOMAIN,ppq.apple.com,DIRECT
+GEOIP,CN,DIRECT
+DOMAIN-SUFFIX,gitlab-
 DOMAIN-SUFFIX,gitlab-static.net,DIRECT
 DOMAIN-SUFFIX,gitlab.com,DIRECT
 DOMAIN-SUFFIX,gitlab.net,DIRECT
