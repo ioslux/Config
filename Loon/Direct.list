@@ -1,3 +1,13 @@
+#邮箱
 DOMAIN-KEYWORD,tuta
+#小说类
 DOMAIN-KEYWORD,23ddw
 DOMAIN-KEYWORD,biqu
+#影视类
+DOMAIN-KEYWORD,nyafun
+DOMAIN-KEYWORD,libvio
+DOMAIN-KEYWORD,freeok
+#漫画类
+DOMAIN-KEYWORD,baozimh
+DOMAIN-KEYWORD,godamanga
+DOMAIN,pro-api.mgsearcher.com
