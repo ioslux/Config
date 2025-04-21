@@ -111,10 +111,10 @@ proxy-groups:
   - {name: TikTok,  <<: *SelectJP}
   - {name: NetFlix,  <<: *SelectProxy}
   - {name: Spotify,  <<: *SelectHK}
-  - {name: 游戏平台,  <<: *SelectProxy}
+  - {name: 游戏平台,  <<: *SelectDI}
   - {name: 网速测试,  <<: *SelectProxy, include-all: true, filter: *FilterAll}
   # 公司
-  - {name: 微软服务,  <<: *SelectProxy}
+  - {name: 微软服务,  <<: *SelectDI}
 
   # 地区策略
   - {name: 香港策略,  type: select, proxies: [香港自动, 香港均衡-散列, 香港均衡-轮询], include-all: true, filter: *FilterHK}
