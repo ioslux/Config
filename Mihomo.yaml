@@ -20,11 +20,12 @@ LoadBalanceCH: &LoadBalanceCH {type: load-balance, interval: 30, lazy: true, url
 LoadBalanceCR: &LoadBalanceCR {type: load-balance, interval: 30, lazy: true, url: 'https://www.gstatic.com/generate_204', disable-udp: false, strategy: round-robin, timeout: 2000, max-failed-times: 3, hidden: true, include-all: true}
 
 # 锚点 - 选择组 
-SelectFB: &SelectFB {type: select, proxies: [故障转移, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 链式代理, 直连]}
-SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略,  全球手动, 链式代理, 直连]}
-SelectSG: &SelectSG {type: select, proxies: [新国策略, 故障转移, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 链式代理, 直连]}
-SelectUS: &SelectUS {type: select, proxies: [美国策略, 故障转移, 香港策略, 新国策略, 日本策略, 韩国策略, 台湾策略, 全球手动, 链式代理, 直连]}
-SelectProxy: &SelectProxy {type: select, proxies: [默认代理, 故障转移, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 链式代理, 直连]}
+SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 故障转移, 链式代理, 直连]}
+SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 故障转移, 链式代理, 直连]}
+SelectSG: &SelectSG {type: select, proxies: [新国策略, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 故障转移, 链式代理, 直连]}
+SelectJP: &SelectJP {type: select, proxies: [日本策略, 美国策略, 香港策略, 新国策略, 韩国策略, 台湾策略, 全球手动, 故障转移, 链式代理, 直连]}
+SelectUS: &SelectUS {type: select, proxies: [美国策略, 香港策略, 新国策略, 日本策略, 韩国策略, 台湾策略, 全球手动, 故障转移, 链式代理, 直连]}
+SelectProxy: &SelectProxy {type: select, proxies: [默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 故障转移, 链式代理, 直连]}
 # 锚点 - 规则集 
 DomainMrs: &DomainMrs {type: http, interval: 86400, behavior: domain, format: mrs}
 DomainText: &DomainText {type: http, interval: 86400, behavior: domain, format: text}
@@ -102,61 +103,53 @@ proxies:
 
 # 策略组 
 proxy-groups:
-  - {name: 默认代理,   <<: *SelectFB, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Static.png}
-  - {name: AI平台,    <<: *SelectUS, include-all: true, filter: *FilterAll, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/AI.png}
-  - {name: Emby,     <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Emby.png}
-  - {name: YouTube,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/YouTube.png}
-  - {name: NetFlix,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Netflix.png}
-  - {name: 国际媒体,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/DomesticMedia.png}
-  - {name: Telegram, <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Telegram_X.png}
-  - {name: Twitter,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/X.png}
-  - {name: 社交平台,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/PBS.png}
-  - {name: 货币平台,  <<: *SelectSG, icon: https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/Bitcloud.png}
-  - {name: 游戏平台,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Game.png}
-  - {name: 网速测试,  <<: *SelectProxy, include-all: true, filter: *FilterAll, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Speedtest.png}
+  - {name: 默认代理,   <<: *SelectFB}
+  - {name: AI平台,    <<: *SelectUS, include-all: true, filter: *FilterAll}
+  - {name: Emby,     <<: *SelectProxy}
+  - {name: TikTok,  <<: *SelectJP}
+  - {name: NetFlix,  <<: *SelectProxy}
+  - {name: Spotify,  <<: *SelectHK}
+  - {name: 游戏平台,  <<: *SelectProxy}
+  - {name: 网速测试,  <<: *SelectProxy, include-all: true, filter: *FilterAll}
   # 公司
-  - {name: 微软服务,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Microsoft.png}
-  - {name: 谷歌服务,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Google_Search.png}
-  - {name: 苹果服务,  <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Apple.png}
-  - {name: 脸书服务,  <<: *SelectUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Facebook.png}
+  - {name: 微软服务,  <<: *SelectProxy}
+
   # 地区策略
-  - {name: 香港策略,  type: select, proxies: [香港自动, 香港均衡-散列, 香港均衡-轮询], include-all: true, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Hong_Kong.png}
-  - {name: 新国策略,type: select, proxies: [新国自动, 新国均衡-散列, 新国均衡-轮询], include-all: true, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Singapore.png}
-  - {name: 日本策略,  type: select, proxies: [日本自动, 日本均衡-散列, 日本均衡-轮询], include-all: true, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Japan.png}
-  - {name: 韩国策略,  type: select, proxies: [韩国自动, 韩国均衡-散列, 韩国均衡-轮询], include-all: true, filter: *FilterKR, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Korea.png}
-  - {name: 美国策略,  type: select, proxies: [美国自动, 美国均衡-散列, 美国均衡-轮询], include-all: true, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/United_States.png}
-  - {name: 台湾策略,  type: select, proxies: [台湾自动, 台湾均衡-散列, 台湾均衡-轮询], include-all: true, filter: *FilterTW, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Taiwan.png}
+  - {name: 香港策略,  type: select, proxies: [香港自动, 香港均衡-散列, 香港均衡-轮询], include-all: true, filter: *FilterHK}
+  - {name: 新国策略,type: select, proxies: [新国自动, 新国均衡-散列, 新国均衡-轮询], include-all: true, filter: *FilterSG}
+  - {name: 日本策略,  type: select, proxies: [日本自动, 日本均衡-散列, 日本均衡-轮询], include-all: true, filter: *FilterJP}
+  - {name: 韩国策略,  type: select, proxies: [韩国自动, 韩国均衡-散列, 韩国均衡-轮询], include-all: true, filter: *FilterKR}
+  - {name: 美国策略,  type: select, proxies: [美国自动, 美国均衡-散列, 美国均衡-轮询], include-all: true, filter: *FilterUS}
+  - {name: 台湾策略,  type: select, proxies: [台湾自动, 台湾均衡-散列, 台湾均衡-轮询], include-all: true, filter: *FilterTW}
    # 其他策略
-  - {name: 故障转移,  <<: *FallBack, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 直连], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/ULB.png}
-  - {name: 链式代理,  type: relay, proxies: [中转机, 落地机], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/TIDAL_1.png}
-  - {name: 中转机,    type: select, proxies: [香港策略, 台湾策略, 日本策略, 新国策略, 韩国策略, 美国策略, 全球手动], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Rocket.png}
-  - {name: 落地机,    type: select, include-all: true, filter: *FilterAll, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Domestic.png}
-  - {name: 国内网站,  type: select, proxies: [直连, 默认代理], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/China.png}
-  - {name: 国外网站,   <<: *SelectProxy, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Global.png}
-  - {name: 全球手动,   type: select, include-all: true, filter: *FilterAll, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Clubhouse.png}
-  - {name: 抖快书定位, type: select, proxies: [直连, 香港策略, 台湾策略, 新国策略, 日本策略, 韩国策略, 美国策略], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Null_Nation.png}
-  - {name: 漏网之鱼,   type: select, proxies: [默认代理, 直连], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Final.png}
+  - {name: 故障转移,  <<: *FallBack, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 直连]}
+  - {name: 链式代理,  type: relay, proxies: [中转机, 落地机]}
+  - {name: 中转机,    type: select, proxies: [香港策略, 台湾策略, 日本策略, 新国策略, 韩国策略, 美国策略, 全球手动]}
+  - {name: 落地机,    type: select, include-all: true, filter: *FilterAll}
+  - {name: 全球手动,   type: select, include-all: true, filter: *FilterAll}
+  - {name: 抖快书定位, type: select, proxies: [直连, 香港策略, 台湾策略, 新国策略, 日本策略, 韩国策略, 美国策略]}
+  - {name: 漏网之鱼,   type: select, proxies: [默认代理, 直连]}
   # 自动测速
-  - {name: 香港自动,        <<: *UrlTest, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
-  - {name: 台湾自动,        <<: *UrlTest, filter: *FilterTW, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
-  - {name: 新国自动,        <<: *UrlTest, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
-  - {name: 日本自动,        <<: *UrlTest, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
-  - {name: 韩国自动,        <<: *UrlTest, filter: *FilterKR, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
-  - {name: 美国自动,        <<: *UrlTest, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
+  - {name: 香港自动,        <<: *UrlTest, filter: *FilterHK}
+  - {name: 台湾自动,        <<: *UrlTest, filter: *FilterTW}
+  - {name: 新国自动,        <<: *UrlTest, filter: *FilterSG}
+  - {name: 日本自动,        <<: *UrlTest, filter: *FilterJP}
+  - {name: 韩国自动,        <<: *UrlTest, filter: *FilterKR}
+  - {name: 美国自动,        <<: *UrlTest, filter: *FilterUS}
   # 负载均衡-散列
-  - {name: 香港均衡-散列,   <<: *LoadBalanceCH, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
-  - {name: 台湾均衡-散列,   <<: *LoadBalanceCH, filter: *FilterTW, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
-  - {name: 新国均衡-散列,   <<: *LoadBalanceCH, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
-  - {name: 日本均衡-散列,   <<: *LoadBalanceCH, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
-  - {name: 韩国均衡-散列,   <<: *LoadBalanceCH, filter: *FilterKR, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
-  - {name: 美国均衡-散列,   <<: *LoadBalanceCH, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
+  - {name: 香港均衡-散列,   <<: *LoadBalanceCH, filter: *FilterHK}
+  - {name: 台湾均衡-散列,   <<: *LoadBalanceCH, filter: *FilterTW}
+  - {name: 新国均衡-散列,   <<: *LoadBalanceCH, filter: *FilterSG}
+  - {name: 日本均衡-散列,   <<: *LoadBalanceCH, filter: *FilterJP}
+  - {name: 韩国均衡-散列,   <<: *LoadBalanceCH, filter: *FilterKR}
+  - {name: 美国均衡-散列,   <<: *LoadBalanceCH, filter: *FilterUS}
   # 负载均衡-轮询
-  - {name: 香港均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
-  - {name: 台湾均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterTW, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
-  - {name: 新国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
-  - {name: 日本均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
-  - {name: 韩国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterKR, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
-  - {name: 美国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+  - {name: 香港均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterHK}
+  - {name: 台湾均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterTW}
+  - {name: 新国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterSG}
+  - {name: 日本均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterJP}
+  - {name: 韩国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterKR}
+  - {name: 美国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterUS}
 
 # 远程规则集
 rule-providers: 
@@ -190,7 +183,6 @@ rule-providers:
   cloudflare-cn:             {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/cloudflare-cn.mrs}
   category-public-tracker:   {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/category-public-tracker.mrs}
   category-games:            {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/category-games.mrs}
-  category-cryptocurrency:   {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/category-cryptocurrency.mrs}
   category-social-media-!cn: {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/category-social-media-!cn.mrs}
   category-ai-!cn:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/category-ai-!cn.mrs}
   geolocation-!cn:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/geolocation-!cn.mrs}
@@ -218,40 +210,39 @@ rules:
   - RULE-SET,speedtest,网速测试
   - RULE-SET,openai,AI平台
   - RULE-SET,category-ai-!cn,AI平台
-  - RULE-SET,telegram,Telegram
-  - RULE-SET,twitter,Twitter
+  - RULE-SET,telegram,默认代理
+  - RULE-SET,twitter,默认代理
   - RULE-SET,emby,Emby
-  - RULE-SET,youtube,YouTube
-  - RULE-SET,spotify,国际媒体
+  - RULE-SET,youtube,默认代理
+  - RULE-SET,spotify,Spotify
   - RULE-SET,netflix,NetFlix
-  - RULE-SET,disney,国际媒体
-  - RULE-SET,hbo,国际媒体
-  - RULE-SET,tiktok,国际媒体
-  - RULE-SET,github,微软服务
+  - RULE-SET,disney,默认代理
+  - RULE-SET,hbo,默认代理
+  - RULE-SET,tiktok,TikTok
+  - RULE-SET,github,默认代理
   - RULE-SET,onedrive,微软服务
   - RULE-SET,microsoft,微软服务
-  - RULE-SET,instagram,脸书服务
-  - RULE-SET,facebook,脸书服务
-  - RULE-SET,meta,脸书服务
-  - RULE-SET,google,谷歌服务
-  - RULE-SET,apple-cn,国内网站
-  - RULE-SET,apple,苹果服务
-  - RULE-SET,paypal@cn,国内网站
-  - RULE-SET,paypal,货币平台
-  - RULE-SET,category-cryptocurrency,货币平台
-  - RULE-SET,cloudflare-cn,国内网站
+  - RULE-SET,instagram,默认代理
+  - RULE-SET,facebook,默认代理
+  - RULE-SET,meta,默认代理
+  - RULE-SET,google,默认代理
+  - RULE-SET,apple-cn,直连
+  - RULE-SET,apple,直连
+  - RULE-SET,paypal@cn,直连
+  - RULE-SET,paypal,直连
+  - RULE-SET,cloudflare-cn,直连
   - RULE-SET,category-games,游戏平台
-  - RULE-SET,Line,社交平台
-  - RULE-SET,category-social-media-!cn,社交平台
+  - RULE-SET,Line,默认代理
+  - RULE-SET,category-social-media-!cn,默认代理
   - RULE-SET,download,直连
-  - RULE-SET,cn_domain,国内网站
-  - RULE-SET,geolocation-!cn,国外网站
+  - RULE-SET,cn_domain,直连
+  - RULE-SET,geolocation-!cn,默认代理
   # IP路由
-  - RULE-SET,private_ip,国内网站,no-resolve
-  - RULE-SET,facebook_ip,脸书服务,no-resolve
-  - RULE-SET,google_ip,谷歌服务,no-resolve
+  - RULE-SET,private_ip,直连,no-resolve
+  - RULE-SET,facebook_ip,默认代理,no-resolve
+  - RULE-SET,google_ip,默认代理,no-resolve
   - RULE-SET,netflix_ip,NetFlix,no-resolve
-  - RULE-SET,twitter_ip,Twitter,no-resolve
-  - RULE-SET,telegram_ip,Telegram,no-resolve
-  - RULE-SET,cn_ip,国内网站,no-resolve
+  - RULE-SET,twitter_ip,默认代理,no-resolve
+  - RULE-SET,telegram_ip,默认代理,no-resolve
+  - RULE-SET,cn_ip,直连,no-resolve
   - MATCH,漏网之鱼
