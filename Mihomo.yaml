@@ -8,7 +8,7 @@ PProviders: &PProviders {type: http, interval: 86400, health-check: {enable: tru
 FilterHK: &FilterHK '^(?=.*(?i)(港|🇭🇰|HK|HKG|hk|Hong Kong|HongKong|hongkong))(?!.*(排除1|排除2|5x)).*$'
 FilterSG: &FilterSG '^(?=.*(?i)(坡|🇸🇬|加坡|SG|Singapore|SIN|XSP))(?!.*(排除1|排除2|5x)).*$'
 FilterJP: &FilterJP '^(?=.*(?i)(日|🇯🇵|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan|Tokyo|NRT|KIX|HND|KIX|CTS|FUK))(?!.*(排除1|排除2|5x)).*$'
-FilterKR: &FilterKR '^(?=.*(?i)(韩|🇰🇷|韓|首尔||春川|ICN|南朝鲜|KR|KOR|Korea|South|Seoul))(?!.*(排除1|排除2|5x)).*$'
+FilterKR: &FilterKR '^(?=.*(?i)(韩|🇰🇷|韓|首尔|春川|ICN|南朝鲜|KR|KOR|Korea|South|Seoul))(?!.*(排除1|排除2|5x)).*$'
 FilterUS: &FilterUS '^(?=.*(?i)(美|🇺🇸|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|USA|ATL|BUF|DFW|EWR|IAD|LAX|MCI|MIA|ORD|PHX|PDX|SEA|SJC))(?!.*(排除1|排除2|5x)).*$'
 FilterTW: &FilterTW '^(?=.*(?i)(台|🇼🇸|🇹🇼|TW|tai|TPE|TSA|KHH|新北|彰化))(?!.*(排除1|排除2|5x)).*$'
 FilterOther: &FilterOther '^(?!.*(直连|港|🇭🇰|HK|HKG|hk|Hong Kong|HongKong|hongkong|坡|🇸🇬|加坡|SG|Singapore|SIN|XSP|日|🇯🇵|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan|Tokyo|NRT|KIX|HND|KIX|CTS|FUK|韩|🇰🇷|韓|首尔||春川|ICN|南朝鲜|KR|KOR|Korea|South|Seoul|美|🇺🇸|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|USA|ATL|BUF|DFW|EWR|IAD|LAX|MCI|MIA|ORD|PHX|PDX|SEA|SJC|台|🇼🇸|🇹🇼|TW|tai|TPE|TSA|KHH|新北|彰化))'
