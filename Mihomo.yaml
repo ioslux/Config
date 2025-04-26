@@ -137,6 +137,7 @@ proxy-groups:
   - {name: 韩国策略,  type: select, proxies: [韩国自动, 韩国均衡-散列, 韩国均衡-轮询], include-all: true, filter: *FilterKR}
   - {name: 美国策略,  type: select, proxies: [美国自动, 美国均衡-散列, 美国均衡-轮询], include-all: true, filter: *FilterUS}
   - {name: 台湾策略,  type: select, proxies: [台湾自动, 台湾均衡-散列, 台湾均衡-轮询], include-all: true, filter: *FilterTW}
+  - {name: 其他策略,  type: select, proxies: include-all: true, filter: *FilterOther}
    # 其他策略
   - {name: 抖快书定位, type: select, proxies: [直连, 香港策略, 台湾策略, 新国策略, 日本策略, 韩国策略, 美国策略]}
   - {name: 漏网之鱼,   type: select, proxies: [默认代理, 直连]}
