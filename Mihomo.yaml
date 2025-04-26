@@ -20,13 +20,13 @@ LoadBalanceCH: &LoadBalanceCH {type: load-balance, interval: 30, lazy: true, url
 LoadBalanceCR: &LoadBalanceCR {type: load-balance, interval: 30, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, strategy: round-robin, timeout: 2000, max-failed-times: 3, hidden: true, include-all: true}
 
 # 锚点 - 选择组 
-SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 直连]}
-SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 直连]}
-SelectSG: &SelectSG {type: select, proxies: [新国策略, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 直连]}
-SelectJP: &SelectJP {type: select, proxies: [日本策略, 美国策略, 香港策略, 新国策略, 韩国策略, 台湾策略, 全球手动, 直连]}
-SelectUS: &SelectUS {type: select, proxies: [美国策略, 香港策略, 新国策略, 日本策略, 韩国策略, 台湾策略, 全球手动, 直连]}
-SelectProxy: &SelectProxy {type: select, proxies: [默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 直连]}
-SelectDI: &SelectDI {type: select, proxies: [直连, 默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略]}
+SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, DIRECT]}
+SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
+SelectSG: &SelectSG {type: select, proxies: [新国策略, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
+SelectJP: &SelectJP {type: select, proxies: [日本策略, 美国策略, 香港策略, 新国策略, 韩国策略, 台湾策略, 全球手动, DIRECT]}
+SelectUS: &SelectUS {type: select, proxies: [美国策略, 香港策略, 新国策略, 日本策略, 韩国策略, 台湾策略, 全球手动, DIRECT]}
+SelectProxy: &SelectProxy {type: select, proxies: [默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
+SelectDI: &SelectDI {type: select, proxies: [DIRECT, 默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略]}
 # 锚点 - 规则集 
 DomainMrs: &DomainMrs {type: http, interval: 86400, behavior: domain, format: mrs}
 DomainText: &DomainText {type: http, interval: 86400, behavior: domain, format: text}
@@ -115,10 +115,6 @@ dns:
     - +.push.apple.com
     - beiyong.dynuddns.net
 
-
-# 本地自建节点组
-proxies:
-  - {name: 直连, type: direct, udp: true}
 
 # 策略组 
 proxy-groups:
