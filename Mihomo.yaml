@@ -128,9 +128,9 @@ dns:
   fake-ip-range: 198.18.0.0/15 # fake-ip 池设置
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
-    - RULE-SET:Fakeip-Filter,Private,CN
+    - RULE-SET:cn_domain,private_domain,fix-direct
   nameserver-policy:
-    RULE-SET:CN,Private:
+    RULE-SET:cn_domain,private_domain,fix-direct:
       - "https://dns.alidns.com/dns-query" # 阿里 DNS over H3
       - "https://dot.pub/dns-query" # 腾讯 DNS over DOH
   nameserver:
