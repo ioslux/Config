@@ -72,7 +72,7 @@ external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download
 external-ui-name: zashboard
 external-ui: ui
 external-controller: 0.0.0.0:9090
-secret: yyds666
+secret: 123456
 
 profile:
   store-selected: true
