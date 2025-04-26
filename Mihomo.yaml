@@ -71,6 +71,21 @@ external-ui: ui
 external-ui-name: zashboard
 secret: 123456
 
+# 本地 DNS 解析配置
+hosts:
+  ntp.ntsc.ac.cn: 
+    - 114.118.7.161
+    - 114.118.7.163
+  dns.alidns.com: 
+    - 223.5.5.5
+    - 223.6.6.6
+    - "2400:3200:baba::1"
+    - "2400:3200::1"
+  dot.pub: 
+    - 120.53.53.53
+    - 1.12.12.21
+    - 1.12.12.12
+
 sniffer:
   enable: true
   sniff:
