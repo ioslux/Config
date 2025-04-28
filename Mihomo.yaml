@@ -118,7 +118,7 @@ dns:
     - +.push.apple.com
     - beiyong.dynuddns.net
   nameserver-policy:
-    RULE-SET:connectivity-check，private_domain，cn_domain:
+    RULE-SET:connectivity-check,private_domain,cn_domain:
       - "https://dns.alidns.com/dns-query" # 阿里 DNS over H3
       - "https://dot.pub/dns-query" # 腾讯 DNS over DOH
   nameserver:
