@@ -140,7 +140,7 @@ dns:
 proxy-groups:
   - {name: 默认代理,   <<: *SelectFB}
   - {name: 全球手动,   type: select, include-all: true, filter: *FilterAll}
-  - {name: AI平台,    <<: *SelectUS, include-all: true, filter: *FilterAll}
+  - {name: AI平台,    <<: *SelectUS}
   - {name: Emby,     <<: *SelectDI}
   - {name: TikTok,  <<: *SelectJP}
   - {name: NetFlix,  <<: *SelectProxy}
