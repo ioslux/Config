@@ -130,7 +130,7 @@ dns:
     - beiyong.dynuddns.net
   nameserver-policy:
     RULE-SET:connectivity-check,private_domain,cn_domain:
-      - "quic://dns.alidns.com" # 阿里 DNS over DOQ
+    - "quic://dns.alidns.com" # 阿里 DNS over DOQ
   nameserver:
     - "https://cloudflare-dns.com/dns-query" # Cloudflare DNS over H3
     - "https://cloudflare-dns.com/dns-query#h3=true" # Cloudflare DNS over H3
