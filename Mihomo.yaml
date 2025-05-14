@@ -57,8 +57,8 @@ find-process-mode: 'off'
 global-client-fingerprint: chrome
 keep-alive-interval: 15
 keep-alive-idle: 600
-authentication:
-  - mihomo:ioslux
+#authentication:
+ # - mihomo:ioslux
 skip-auth-prefixes:
   - 192.168.1.0/24
   - 192.168.31.0/24
@@ -69,38 +69,58 @@ external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download
 external-ui-name: zashboard
 external-ui: ui
 external-controller: 0.0.0.0:9090
-secret: ioslux
+secret: ""
 
 # 本地 DNS 解析配置
 hosts:
   ntp.ntsc.ac.cn: 
     - 114.118.7.161
     - 114.118.7.163
-  dns.alidns.com: 
-    - 223.5.5.5
-    - 223.6.6.6
-    - "2400:3200:baba::1"
-    - "2400:3200::1"
 
 profile:
   store-selected: true
   store-fake-ip: true
   
 sniffer:
-  enable: true
-  override-destination: false
-  force-dns-mapping: true
-  parse-pure-ip: true
+  enable: true # 是否启用 sniffer 侦测功能，默认关闭
+  force-dns-mapping: true # 对 redir-host 类型识别的流量进行强制嗅探
+  parse-pure-ip: true # 对所有未获取到域名的流量进行强制嗅探
+  override-destination: false # 是否使用嗅探结果作为实际访问，默认为 true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880] # 对 HTTP 流量进行嗅探的端口范围，常用于网站和应用
+      override-destination: true # 覆盖目标地址以强制流量走代理或规则匹配
+    TLS:
+      ports: [443, 8443] # 对 HTTPS 流量的端口进行嗅探，通常用于加密连接
+    QUIC:
+      ports: [443, 8443] # 对 QUIC 协议的流量进行嗅探，QUI C 常用于改进 HTTPS 连接的速度
+  force-domain:
+    - +.v2ex.com # 对指定域名强制解析，即使 IP 地址已缓存或已知
+  skip-domain:
+    - Mijia.Cloud.com # 跳过指定域名，不对其进行嗅探处理（如智能家居流量）
+  skip-src-address:
+    - 192.168.0.3/32 # 跳过来源 IP 地址，不对其进行嗅探
+  skip-dst-address:
+    - 192.168.0.3/32 # 跳过目标 IP 地址，不对其进行嗅探
 
 tun:
-  enable: true
-  stack: mixed
+  enable: true # 启用 TUN 模式，用于透明代理
+  stack: gvisor # 使用空间网络栈处理流量，可用值： system/gvisor/mixed
+  auto-route: true # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
+#  auto-redirect: true # 自动配置 iptables/nftables 以重定向 TCP 连接, 需要auto-route已启用, 需要root权限
+  auto-detect-interface: true # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
   dns-hijack:
-    - "any:53"
-    - "tcp://any:53"
-  auto-route: true
-  auto-redirect: true
-  auto-detect-interface: true
+    - any:53 # 劫持所有 53 端口的 DNS 请求
+  device: utun0 # 指定 TUN 设备名称，默认为 utun
+  mtu: 1500 # 设置最大传输单元 (MTU)，提高网络吞吐量
+  strict-route: true # 启用 auto-route 时执行严格的路由规则
+  gso: true # 通用分段卸载 (GSO)，提高网络性能
+  gso-max-size: 65536 # 设置 GSO 最大分段大小为 65536 字节
+  udp-timeout: 300 # 设置 UDP 超时时间为 300 秒，优化 NAT 映射
+#  iproute2-table-index: 2022 # 使用指定的路由表索引 (iproute2)
+#  iproute2-rule-index: 9000 # 设置路由规则的索引 (iproute2)
+  endpoint-independent-nat: false # 启用独立于端点的 NAT，性能可能会略有下降，所以不建议在不需要的时候开启
+
     
 dns:
   enable: true # 启用 DNS 模块
@@ -117,7 +137,7 @@ dns:
     - "2400:3200::1" # 阿里 DNS 解析 DNS 域名
     - "2400:3200:baba::1" # 阿里 DNS 解析 DNS 域名
   enhanced-mode: fake-ip # 启用增强模式 redir-host or fake-ip
-  fake-ip-range: 198.18.0.0/16 # fake-ip 池设置
+  fake-ip-range: 198.18.0.0/15 # fake-ip 池设置
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
     - rule-set:connectivity-check
@@ -130,20 +150,21 @@ dns:
     - beiyong.dynuddns.net
   nameserver-policy:
     RULE-SET:connectivity-check,private_domain,cn_domain:
-    - "quic://dns.alidns.com" # 阿里 DNS over DOQ
+    - "quic://223.5.5.5" # 阿里 DNS over DOQ
+    - "quic://223.6.6.6"
   nameserver:
-    - "https://cloudflare-dns.com/dns-query" # Cloudflare DNS over H3
     - "https://cloudflare-dns.com/dns-query#h3=true" # Cloudflare DNS over H3
     - "https://dns.google/dns-query#h3=true" # Google DNS over H3
     - "https://doh.dns.sb/dns-query#h3=true" # SB DNS over H3
     - "https://public.dns.iij.jp/dns-query#h3=true" # IIJ DNS over H3
-    - "quic://dns.nextdns.io/dns-query" # Next DNS  over DOQ
-    - "quic://unfiltered.adguard-dns.com" # AdGuard DNS over DOQ
-  proxy-server-nameserver: # 用于节点域名解析 DNS 服务器
-    - "quic://dns.alidns.com" # 阿里 DNS over DOQ
+    - "quic://dns.nextdns.io" # Next DNS  over DOQ
+    - "quic://dns.adguard-dns.com" # AdGuard DNS over DOQ
+  proxy-server-nameserver: # 代理节点域名解析服务器，仅用于解析代理节点的域名
+    - "quic://dns.nextdns.io" # Next DNS  over DOQ
   direct-nameserver: #  用于直连出口域名解析的 DNS 服务器
-    - "quic://dns.alidns.com" # 阿里 DNS over DOQ
-  direct-nameserver-follow-policy: false # 是否遵循 nameserver-policy，默认为不遵守，仅当 direct-nameserver 不为空时生效
+    - "quic://223.5.5.5" # 阿里 DNS over DOQ
+    - "quic://223.6.6.6"
+  direct-nameserver-follow-policy: true # 是否遵循 nameserver-policy，默认为不遵守，仅当 direct-nameserver 不为空时生效
 
 
 # 策略组 
@@ -240,13 +261,30 @@ rule-providers:
   private_ip:                {<<: *IPcidrMrs, url: https://github.com/666OS/YYDS/raw/main/mihomo/rules/private_ip.mrs}
   cn_ip:                     {<<: *IPcidrMrs, url: https://github.com/666OS/YYDS/raw/main/mihomo/rules/cn_ip.mrs}
 
+  #泄露拦截
+  BlockHttpDNS:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs}
+  BlockHttpDNScidr:                     {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_IP.mrs}
+  Category-httpdns-cn:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-httpdns-cn.mrs}
+  STUN:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/Kwisma/cf-worker-mihomo/main/rules/mihomo/STUN/STUN_Domain.mrs}
+  STUNcidr:                     {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/Kwisma/cf-worker-mihomo/main/rules/mihomo/STUN/STUN_IP.mrs}
 # 路由
 rules:
   # 常用必备
   - DST-PORT,123,DIRECT
   - DOMAIN-SUFFIX,imee.me,DIRECT
+  - DST-PORT,3478,REJECT
+  - DOMAIN-KEYWORD,stun,REJECT
+  - AND,((NETWORK,UDP),(DST-PORT,19302)),REJECT
+  - AND,((NETWORK,UDP),(DST-PORT,5351)),REJECT
+  - AND,((NETWORK,UDP),(DST-PORT,5350)),REJECT
+  - AND,((NETWORK,TCP),(DST-PORT,5349)),REJECT
   # 防御
   - RULE-SET,category-public-tracker,REJECT-DROP
+  - RULE-SET,BlockHttpDNS,REJECT
+  - RULE-SET,BlockHttpDNScidr,REJECT
+  - RULE-SET,Category-httpdns-cn,REJECT
+  - RULE-SET,STUN,REJECT
+  - RULE-SET,STUNcidr,REJECT
   # 域名路由
   - RULE-SET,fix-direct,DIRECT
   - RULE-SET,XPTV,DIRECT
