@@ -261,7 +261,7 @@ rule-providers:
   private_ip:                {<<: *IPcidrMrs, url: https://github.com/666OS/YYDS/raw/main/mihomo/rules/private_ip.mrs}
   cn_ip:                     {<<: *IPcidrMrs, url: https://github.com/666OS/YYDS/raw/main/mihomo/rules/cn_ip.mrs}
 
-  #泄露拦截
+  # 泄露拦截
   BlockHttpDNS:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs}
   BlockHttpDNScidr:                     {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_IP.mrs}
   Category-httpdns-cn:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-httpdns-cn.mrs}
