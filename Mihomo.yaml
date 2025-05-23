@@ -274,10 +274,7 @@ rule-providers:
   # 泄露拦截
   BlockHttpDNS:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs}
   BlockHttpDNScidr:                     {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_IP.mrs}
-  Category-httpdns:                     {<<: *DomainMrs, url: https://github.akams.cn/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/httpdns.mrs}
-  Category-httpdns-cn:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-httpdns-cn.mrs}
   STUN:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/Kwisma/cf-worker-mihomo/main/rules/mihomo/STUN/STUN_Domain.mrs}
-  STUNcidr:                     {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/Kwisma/cf-worker-mihomo/main/rules/mihomo/STUN/STUN_IP.mrs}
 # 路由
 rules:
   # 常用必备
@@ -294,10 +291,7 @@ rules:
   - RULE-SET,category-public-tracker,REJECT-DROP
   - RULE-SET,BlockHttpDNS,REJECT
   - RULE-SET,BlockHttpDNScidr,REJECT
-  - RULE-SET,Category-httpdns,REJECT
-  - RULE-SET,Category-httpdns-cn,REJECT
   - RULE-SET,STUN,REJECT
-  - RULE-SET,STUNcidr,REJECT
   # 域名路由
   - RULE-SET,fix-direct,DIRECT
   - RULE-SET,XPTV,DIRECT
