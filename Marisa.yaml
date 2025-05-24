@@ -371,7 +371,7 @@ sub-rules:
     - RULE-SET,Pandora,默认代理 # Pandora 珠宝相关
     - OR,((RULE-SET,Emby,Emby),(DOMAIN-KEYWORD,emby)),Emby
     - RULE-SET,Talkatone,默认代理 # Talkatone 电话
-    - OR,((RULE-SET,Facebook),(DOMAIN-KEYWORD,facebook),(DOMAIN-KEYWORD,fbcdn)),Facebook # Facebook 社交网络
+    - OR,((RULE-SET,Facebook),(DOMAIN-KEYWORD,facebook),(DOMAIN-KEYWORD,fbcdn)),默认代理 # Facebook 社交网络
     - OR,((RULE-SET,Twitter),(DOMAIN-KEYWORD,twitter)),默认代理 # Twitter 社交平台
     - RULE-SET,Netflix,NetFlix # Netflix 影视流媒体
     - RULE-SET,Tor,默认代理 # 洋葱浏览器
