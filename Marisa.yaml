@@ -274,7 +274,7 @@ proxy-groups:
   - {name: 日本自动,        <<: *UrlTest, filter: *FilterJP}
   - {name: 韩国自动,        <<: *UrlTest, filter: *FilterKR}
   - {name: 美国自动,        <<: *UrlTest, filter: *FilterUS}
-
+  - { name: GLOBAL, type: select, proxies: [默认代理, DIRECT]}
 
 # 远程规则集
 rules:
