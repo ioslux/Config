@@ -309,7 +309,7 @@ rules:
   - RULE-SET,hbo,默认代理
   - RULE-SET,tiktok,TikTok
   - RULE-SET,github,默认代理
-  - RULE-SET,onedrive,微软服务
+  - RULE-SET,onedrive,默认代理
   - RULE-SET,microsoft,微软服务
   - RULE-SET,instagram,默认代理
   - RULE-SET,facebook,默认代理
