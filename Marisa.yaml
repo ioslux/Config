@@ -355,7 +355,7 @@ sub-rules:
     - RULE-SET,Epic,游戏平台 # Epic Games 商店
     - RULE-SET,Supercell,游戏平台 # Supercell (如部落冲突)
     - RULE-SET,EA,游戏平台 # EA 游戏 (如 FIFA)
-    - RULE-SET,Sony,DIRECT# Sony 相关服务
+    - RULE-SET,Sony,DIRECT # Sony 相关服务
     - RULE-SET,Hoyoverse,默认代理 # 米哈游 (如原神)
     - RULE-SET,18comic,默认代理 # 禁漫天堂动漫网站
     - RULE-SET,GoogleDrive,默认代理 # Google Drive 云存储
@@ -384,8 +384,8 @@ sub-rules:
     - OR,((RULE-SET,Siri),(RULE-SET,SystemOTA),(RULE-SET,AppleID),(RULE-SET,AppleDev),(RULE-SET,AppleFirmware),(RULE-SET,AppleHardware),(RULE-SET,Apple)),DIRECT
     - RULE-SET,Beats,DIRECT # Beats 耳机及音频服务
     - RULE-SET,DouYin,DIRECT # 抖音，短视频社交平台
-    - RULE-SET,CCTV,DIRECT# 央视影音，中国中央电视台相关服务
-    - RULE-SET,BiliBili,DIRECT# 哔哩哔哩，二次元弹幕视频网站
+    - RULE-SET,CCTV,DIRECT # 央视影音，中国中央电视台相关服务
+    - RULE-SET,BiliBili,DIRECT # 哔哩哔哩，二次元弹幕视频网站
     - RULE-SET,iQIYI,DIRECT # 爱奇艺，在线视频平台
     - RULE-SET,Kugou,DIRECT # 酷狗音乐，在线音乐平台
     - RULE-SET,Kuwo,DIRECT # 酷我音乐，在线音乐平台
@@ -402,7 +402,7 @@ sub-rules:
     - RULE-SET,Hupu,DIRECT # 虎扑，体育和潮流社区
     - RULE-SET,ABC,DIRECT # 农业银行服务
     - RULE-SET,Baidu,DIRECT # 百度，搜索引擎和相关服务
-    - RULE-SET,DingTalk,DIRECT# 钉钉，阿里巴巴企业通讯工具
+    - RULE-SET,DingTalk,DIRECT # 钉钉，阿里巴巴企业通讯工具
     - RULE-SET,SteamCN,DIRECT # Steam 中国版，游戏社区和商店
     - RULE-SET,NetEase,DIRECT # 网易，涵盖邮箱、游戏等服务
     - RULE-SET,JingDong,DIRECT # 京东，电商平台
