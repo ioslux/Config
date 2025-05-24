@@ -332,7 +332,7 @@ sub-rules:
     - RULE-SET,4GTV,默认代理 # 4GTV 媒体
     - OR,((RULE-SET,Spotify),(DOMAIN-KEYWORD,spotify)),Spotify # Spotify 音乐流媒体
     - OR,((RULE-SET,Twitch),(DOMAIN-KEYWORD,ttvnw)),默认代理 # Twitch 直播平台
-    - OR,((RULE-SET,PikPak),(DOMAIN-KEYWORD,pikpak)),默认代理# PikPak 云存储
+    - OR,((RULE-SET,PikPak),(DOMAIN-KEYWORD,pikpak)),默认代理 # PikPak 云存储
     - RULE-SET,Discord,默认代理 # Discord 语音聊天社区
     - OR,((RULE-SET,Telegram),(DOMAIN-KEYWORD,nicegram)),默认代理 # Telegram 即时通讯
     - OR,((RULE-SET,GitHub),(DOMAIN-KEYWORD,github)),默认代理 # GitHub 代码托管平台
