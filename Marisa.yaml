@@ -253,7 +253,7 @@ proxy-groups:
   - {name: NetFlix,  <<: *SelectProxy}
   - {name: Spotify,  <<: *SelectHK}
   - {name: 游戏平台,  <<: *SelectProxy}
-  - {name: 网速测试,  <<: *SelectProxy, include-all: true, filter: *FilterAll}
+  - {name: 网速测试,  <<: *SelectDI}
   # 公司
   - {name: 微软服务,  <<: *SelectDI}
 
