@@ -340,7 +340,7 @@ sub-rules:
     - OR,((RULE-SET,Adobe),(DOMAIN-KEYWORD,adobe)),默认代理 # Adobe 相关服务 (如 Creative Cloud)
     - RULE-SET,Docker,默认代理 # Docker 容器服务
     - OR,((RULE-SET,Instagram),(DOMAIN-KEYWORD,instagram)),默认代理 # Instagram 社交平台
-    - RULE-SET,PayPal,默认代理# PayPal 在线支付
+    - RULE-SET,PayPal,默认代理 # PayPal 在线支付
     - OR,((RULE-SET,Claude),(RULE-SET,OpenAI),(RULE-SET,Gemini),(AND,((RULE-SET,Copilot),(NOT,((DOMAIN,www.bing.com))))),(DOMAIN-KEYWORD,openai),(DOMAIN-KEYWORD,openaicom-api),(DOMAIN-KEYWORD,colab),(DOMAIN-KEYWORD,developerprofiles),(DOMAIN-KEYWORD,generativelanguage)),AI平台 # Open AI
     - RULE-SET,Intel,默认代理 # Intel 相关服务
     - OR,((RULE-SET,Speedtest),(DOMAIN-KEYWORD,speedtest)),网速测试 # Speedtest 速度测试
@@ -366,7 +366,7 @@ sub-rules:
     - RULE-SET,HBO,默认代理 # Home Box Office
     - RULE-SET,Line,默认代理 # LINE （连我）
     - RULE-SET,Wise,默认代理 # Wise 金融科技
-    - RULE-SET,Signal,默认代理# Signal 加密即時通訊
+    - RULE-SET,Signal,默认代理 # Signal 加密即時通訊
     - RULE-SET,Picacg,默认代理 # 哔咔哔咔漫画
     - RULE-SET,Pandora,默认代理 # Pandora 珠宝相关
     - OR,((RULE-SET,Emby,Emby),(DOMAIN-KEYWORD,emby)),Emby
