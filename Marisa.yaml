@@ -275,7 +275,6 @@ proxy-groups:
   - {name: 韩国自动,        <<: *UrlTest, filter: *FilterKR}
   - {name: 美国自动,        <<: *UrlTest, filter: *FilterUS}
 
-
 # 远程规则集
 rules:
   - SUB-RULE,(OR,((NETWORK,UDP),(NETWORK,TCP))),SUB-REJECT
