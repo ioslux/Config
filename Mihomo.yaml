@@ -280,6 +280,7 @@ rule-providers:
 rules:
   # 常用必备
   - DST-PORT,123,DIRECT
+  - DOMAIN-KEYWORD,libvio,DIRECT
   - DOMAIN-SUFFIX,imee.me,DIRECT
   - DST-PORT,3478,REJECT
   - DOMAIN-KEYWORD,stun,REJECT
