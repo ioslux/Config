@@ -182,10 +182,10 @@ dns:
 # 策略组 
 proxy-groups:
   - {name: 默认代理,   <<: *SelectFB}
+  - {name: 全球手动,   type: select, include-all: true, filter: *FilterAll}
   - {name: 链式代理,  type: relay, proxies: [中转机, 落地机]}
   - {name: 中转机,    type: select, proxies: [全球手动, 香港策略, 台湾策略, 日本策略, 新国策略, 韩国策略, 美国策略]}
   - {name: 落地机,    type: select, include-all: true, filter: *FilterAll}
-  - {name: 全球手动,   type: select, include-all: true, filter: *FilterAll}
   - {name: AI平台,    <<: *SelectUS}
   - {name: Emby,     <<: *SelectDI}
   - {name: TikTok,  <<: *SelectJP}
