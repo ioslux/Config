@@ -17,7 +17,7 @@ LoadBalanceCH: &LoadBalanceCH {type: load-balance, interval: 30, lazy: true, url
 LoadBalanceCR: &LoadBalanceCR {type: load-balance, interval: 30, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, strategy: round-robin, timeout: 2000, max-failed-times: 3, hidden: true, include-all: true}
 
 # 锚点 - 选择组 
-SelectFB: &SelectFB {type: select, proxies: [链式代理, 全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, DIRECT]}
+SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 链式代理, DIRECT]}
 SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
 SelectSG: &SelectSG {type: select, proxies: [新国策略, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
 SelectJP: &SelectJP {type: select, proxies: [日本策略, 美国策略, 香港策略, 新国策略, 韩国策略, 台湾策略, 全球手动, DIRECT]}
