@@ -281,7 +281,7 @@ rule-providers:
   # 泄露拦截
   BlockHttpDNS:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs}
   BlockHttpDNScidr:                     {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_IP.mrs}
-  STUN:                     {<<: *DomainMrs, url: https://raw.githubusercontent.com/Kwisma/cf-worker-mihomo/main/rules/mihomo/STUN/STUN_Domain.mrs}
+  STUN:                     {<<: *DomainMrs, url: https://cdn.jsdmirror.com/gh/Kwisma/rules@main/rules/mihomo/STUN/STUN_Domain.mrs}
 # 路由
 rules:
   # 常用必备
