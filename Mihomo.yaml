@@ -74,18 +74,33 @@ secret: ""
 
 # 本地 DNS 解析配置
 hosts:
-  ntp.ntsc.ac.cn: 
-    - 114.118.7.161
-    - 114.118.7.163
+  dns.alidns.com:
+    - 223.5.5.5
+    - 223.6.6.6
+    - 2400:3200::1
+    - 2400:3200:baba::1
+  dns.google:
+    - 8.8.4.4
+    - 8.8.8.8
+    - 2001:4860:4860::8844
+    - 2001:4860:4860::8888
 
 profile:
   store-selected: true
   store-fake-ip: true
+
+# 网络时间协议 (NTP) 设置
+ntp:
+  enable: false # 启用 NTP 功能
+  write-to-system: false # 将同步的时间写入系统时钟，需root权限
+  server: ntp.ntsc.ac.cn # NTP 服务器地址
+  port: 123 # NTP 服务器端口，默认使用 123 端口
+  interval: 30 # 同步时间的间隔 (单位: 分钟)
   
 sniffer:
   enable: true # 是否启用 sniffer 侦测功能，默认关闭
-  force-dns-mapping: true # 对 redir-host 类型识别的流量进行强制嗅探
-  parse-pure-ip: true # 对所有未获取到域名的流量进行强制嗅探
+  force-dns-mapping: false # 对 redir-host 类型识别的流量进行强制嗅探
+  parse-pure-ip: false # 对所有未获取到域名的流量进行强制嗅探
   override-destination: false # 是否使用嗅探结果作为实际访问，默认为 true
   sniff:
     HTTP:
@@ -113,7 +128,7 @@ tun:
   dns-hijack:
     - any:53 # 劫持所有 53 端口的 DNS 请求
     - tcp://any:53
-  device: utun0 # 指定 TUN 设备名称，默认为 utun
+  device: mihomo # 指定 TUN 设备名称，默认为 utun
   mtu: 1500 # 设置最大传输单元 (MTU)，提高网络吞吐量
   strict-route: true # 启用 auto-route 时执行严格的路由规则
   gso: true # 通用分段卸载 (GSO)，提高网络性能
@@ -127,15 +142,15 @@ tun:
 dns:
   enable: true # 启用 DNS 模块
   cache-algorithm: arc # 缓存算法，参数:lru 最近最少使用，arc 自适应替换缓存
-  prefer-h3: true # DOH 优先使用 http/3
+  prefer-h3: false # DOH 优先使用 http/3
   use-hosts: true # 使用配置中的 hosts 文件条目
   use-system-hosts: true # 使用系统的 hosts 文件条目
   respect-rules: false # dns 连接遵守路由规则，需配置 proxy-server-nameserver, 强烈不建议和 prefer-h3 一起使用
   listen: 0.0.0.0:1053 # 本地 DNS 监听端口，默认是 1053 端口
   ipv6: true # 启用 IPv6 DNS 解析，避免 IPv6 地址的解析请求
   default-nameserver:
-    - quic://223.5.5.5 # 阿里 DNS 解析 DNS 域名
-    - quic://223.6.6.6 # 阿里 DNS 解析 DNS 域名
+    - 223.5.5.5 # 阿里 DNS 解析 DNS 域名
+    - system # 阿里 DNS 解析 DNS 域名
   enhanced-mode: fake-ip # 启用增强模式 redir-host or fake-ip
   fake-ip-range: 198.18.0.1/16 # fake-ip 池设置
   fake-ip-filter-mode: blacklist
@@ -169,12 +184,12 @@ dns:
       - "quic://dns.18bit.cn" # 18bit DNS over DOQ
       - "quic://dns.ipv4dns.com" # 清新云 DNS over DOQ
       - "quic://2025.dns1.top" # 关圣 DNS over DOQ
-      - "quic://dns.alidns.com" # 阿里 DNS over DOQ
-      - system
+     # - "quic://dns.alidns.com" # 阿里 DNS over DOQ
+     # - system
   nameserver:
     - "quic://dns.adguard-dns.com" # AdGuard DNS over DOQ
-    - "https://cloudflare-dns.com/dns-query#h3=true" # Cloudflare DNS over H3
-    - "https://dns.google/dns-query#h3=true" # Google DNS over H3
+   # - "https://cloudflare-dns.com/dns-query#h3=true" # Cloudflare DNS over H3
+   # - "https://dns.google/dns-query#h3=true" # Google DNS over H3
   proxy-server-nameserver: # 代理节点域名解析服务器，仅用于解析代理节点的域名
     - "quic://dns.alidns.com" # 阿里 DNS over DOQ
   direct-nameserver: #  用于直连出口域名解析的 DNS 服务器
