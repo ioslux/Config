@@ -259,7 +259,7 @@ proxy-groups:
   - {name: TikTok,  <<: *SelectJP}
   - {name: NetFlix,  <<: *SelectProxy}
   - {name: Spotify,  <<: *SelectHK}
-  - {name: Telegram,  <<: *SelectFB}
+  - {name: Telegram,  <<: *SelectProxy}
   - {name: 游戏平台,  <<: *SelectDI}
   - {name: 网速测试,  <<: *SelectDI}
   - {name: 链式代理,  type: relay, proxies: [中转机, 落地机]}
