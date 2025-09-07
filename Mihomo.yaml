@@ -1203,7 +1203,7 @@ sub-rules:
     - RULE-SET,supercell_domain,游戏平台 # Supercell (如部落冲突)
     - RULE-SET,ea_domain,游戏平台 # EA 游戏 (如 FIFA)
     - RULE-SET,sony_domain,游戏平台 # Sony 相关服务
-    - RULE-SET,hoyoverse_domain,DIRECT # 米哈游 (如原神)
+    - RULE-SET,hoyoverse_domain,默认代理 # 米哈游 (如原神)
     - RULE-SET,18comic_domain,默认代理 # 禁漫天堂动漫网站
     - RULE-SET,googledrive_domain,默认代理 # Google Drive 云存储
     - RULE-SET,googleearth_domain,默认代理 # Google Earth 地图服务
