@@ -267,12 +267,12 @@ proxy-groups:
   - {name: 落地机,    type: select, include-all: true, filter: *FilterAll}
 
   # 地区策略
-  - {name: 香港策略,  type: select, proxies: [香港自动], include-all: true, filter: *FilterHK}
-  - {name: 新国策略,  type: select, proxies: [新国自动], include-all: true, filter: *FilterSG}
-  - {name: 日本策略,  type: select, proxies: [日本自动], include-all: true, filter: *FilterJP}
-  - {name: 韩国策略,  type: select, proxies: [韩国自动], include-all: true, filter: *FilterKR}
-  - {name: 美国策略,  type: select, proxies: [美国自动], include-all: true, filter: *FilterUS}
-  - {name: 台湾策略,  type: select, proxies: [台湾自动], include-all: true, filter: *FilterTW}
+  - {name: 香港策略,  type: select, proxies: [香港自动，香港均衡], include-all: true, filter: *FilterHK}
+  - {name: 台湾策略,  type: select, proxies: [台湾自动，台湾均衡], include-all: true, filter: *FilterTW}
+  - {name: 新国策略,  type: select, proxies: [新国自动，新国均衡], include-all: true, filter: *FilterSG}
+  - {name: 日本策略,  type: select, proxies: [日本自动，日本均衡], include-all: true, filter: *FilterJP}
+  - {name: 韩国策略,  type: select, proxies: [韩国自动，韩国均衡], include-all: true, filter: *FilterKR}
+  - {name: 美国策略,  type: select, proxies: [美国自动，美国均衡], include-all: true, filter: *FilterUS}
   - {name: 其他策略,  type: select, include-all: true, filter: *FilterOther}
   # 其他策略
   - {name: 漏网之鱼,   type: select, proxies: [默认代理, DIRECT]}
@@ -284,12 +284,12 @@ proxy-groups:
   - {name: 韩国自动,        <<: *UrlTest, filter: *FilterKR}
   - {name: 美国自动,        <<: *UrlTest, filter: *FilterUS}
   # 负载均衡-轮询
-  - {name: 香港均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterHK}
-  - {name: 台湾均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterTW}
-  - {name: 新国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterSG}
-  - {name: 日本均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterJP}
-  - {name: 韩国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterKR}
-  - {name: 美国均衡-轮询,   <<: *LoadBalanceCR, filter: *FilterUS}
+  - {name: 香港均衡,   <<: *LoadBalanceCR, filter: *FilterHK}
+  - {name: 台湾均衡,   <<: *LoadBalanceCR, filter: *FilterTW}
+  - {name: 新国均衡,   <<: *LoadBalanceCR, filter: *FilterSG}
+  - {name: 日本均衡,   <<: *LoadBalanceCR, filter: *FilterJP}
+  - {name: 韩国均衡,   <<: *LoadBalanceCR, filter: *FilterKR}
+  - {name: 美国均衡,   <<: *LoadBalanceCR, filter: *FilterUS}
 
 # 远程规则集
 rule-providers: 
