@@ -1138,6 +1138,13 @@ rule-providers:
     url: "https://jsd.onmicrosoft.cn/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs"
     path: ./ruleset/Fakeip_Filter_Domain.mrs
 
+# 路由
+rules:
+  # 常用必备
+  - DOMAIN-KEYWORD,libvio,DIRECT
+  - SUB-RULE,(OR,((NETWORK,UDP),(NETWORK,TCP))),SUB-RULES
+  - MATCH,漏网之鱼
+
 sub-rules:
   SUB-RULES:
     - RULE-SET,advertising-ads_domain,REJECT
@@ -1295,9 +1302,3 @@ sub-rules:
     - RULE-SET,cloudflare_ip,默认代理,no-resolve
     - OR,((AND,((RULE-SET,cn_domain),(RULE-SET,cn_ip))),(RULE-SET,cn_ip),(RULE-SET,private_domain),(RULE-SET,private_ip,no-resolve)),DIRECT
 
-# 路由
-rules:
-  # 常用必备
-  - DOMAIN-KEYWORD,libvio,DIRECT
-  - SUB-RULE,(OR,((NETWORK,UDP),(NETWORK,TCP))),SUB-RULES
-  - MATCH,漏网之鱼
