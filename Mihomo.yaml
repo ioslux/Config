@@ -261,7 +261,6 @@ proxy-groups:
   - {name: Spotify,  <<: *SelectHK}
   - {name: Telegram,  <<: *SelectProxy}
   - {name: 游戏平台,  <<: *SelectDI}
-  - {name: 网速测试,  <<: *SelectDI}
   - {name: 链式代理,  type: relay, proxies: [中转机, 落地机]}
   - {name: 中转机,    type: select, proxies: [全球手动, 香港策略, 台湾策略, 日本策略, 新国策略, 韩国策略, 美国策略]}
   - {name: 落地机,    type: select, include-all: true, filter: *FilterAll}
@@ -789,10 +788,15 @@ rule-providers:
     url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/SoundCloud/SoundCloud_OCD_Domain.mrs"
     path: ./ruleset/SoundCloud_Domain.mrs
 
-  speedtest_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Speedtest/Speedtest_OCD_Domain.mrs"
-    path: ./ruleset/Speedtest_Domain.mrs
+  speedtestInternational_domain:
+    <<: *ClassicalYaml
+    url: "https://kelee.one/Tool/Clash/Rule/SpeedtestInternational.yaml"
+    path: ./ruleset/SpeedtestInternational_Domain.yaml
+
+  speedtestChina_domain:
+    <<: *ClassicalYaml
+    url: "https://kelee.one/Tool/Clash/Rule/SpeedtestChina.yaml"
+    path: ./ruleset/SpeedtestChina.yaml
 
   steam_domain:
     <<: *DomainMrs
@@ -1190,7 +1194,7 @@ sub-rules:
     - RULE-SET,paypal_domain,默认代理 # PayPal 在线支付
     - OR,((RULE-SET,claude_domain),(RULE-SET,openai_domain),(RULE-SET,gemini_domain),(AND,((RULE-SET,copilot_domain),(NOT,((DOMAIN,www.bing.com))))),(DOMAIN-KEYWORD,openai),(DOMAIN-KEYWORD,openaicom-api),(DOMAIN-KEYWORD,colab),(DOMAIN-KEYWORD,developerprofiles),(DOMAIN-KEYWORD,generativelanguage)),AI平台 # Open AI
     - RULE-SET,intel_domain,默认代理 # Intel 相关服务
-    - OR,((RULE-SET,speedtest_domain),(DOMAIN-KEYWORD,speedtest)),网速测试 # Speedtest 速度测试
+    - RULE-SET,speedtestInternational_domain,默认代理 # Speedtest 速度测试
     - RULE-SET,reddit_domain,默认代理 # Reddit 论坛
     - RULE-SET,ehgallery_domain,默认代理 #E站（E-Hentai / ExHentai）
     - RULE-SET,pixiv_domain,默认代理 # P站（Pixiv插画社区）
@@ -1251,6 +1255,7 @@ sub-rules:
     - RULE-SET,baidu_domain,DIRECT # 百度，搜索引擎和相关服务
     - RULE-SET,dingtalk_domain,DIRECT # 钉钉，阿里巴巴企业通讯工具
     - RULE-SET,steamcn_domain,DIRECT # Steam 中国版，游戏社区和商店
+    - RULE-SET,speedtestChina_domain,Direct # Speedtest 速度测试
     - RULE-SET,netease_domain,DIRECT # 网易，涵盖邮箱、游戏等服务
     - RULE-SET,jingdong_domain,DIRECT # 京东，电商平台
     - RULE-SET,58tongcheng_domain,DIRECT # 58同城，分类信息平台
