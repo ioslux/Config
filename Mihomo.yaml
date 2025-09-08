@@ -1255,7 +1255,7 @@ sub-rules:
     - RULE-SET,baidu_domain,DIRECT # 百度，搜索引擎和相关服务
     - RULE-SET,dingtalk_domain,DIRECT # 钉钉，阿里巴巴企业通讯工具
     - RULE-SET,steamcn_domain,DIRECT # Steam 中国版，游戏社区和商店
-    - RULE-SET,speedtestChina_domain,Direct # Speedtest 速度测试
+    - RULE-SET,speedtestChina_domain,DIRECT # Speedtest 速度测试
     - RULE-SET,netease_domain,DIRECT # 网易，涵盖邮箱、游戏等服务
     - RULE-SET,jingdong_domain,DIRECT # 京东，电商平台
     - RULE-SET,58tongcheng_domain,DIRECT # 58同城，分类信息平台
