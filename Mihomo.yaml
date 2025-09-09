@@ -17,7 +17,7 @@ LoadBalanceCH: &LoadBalanceCH {type: load-balance, interval: 30, lazy: true, url
 LoadBalanceCR: &LoadBalanceCR {type: load-balance, interval: 30, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, strategy: round-robin, timeout: 2000, max-failed-times: 3, hidden: true, include-all: true}
 
 # 锚点 - 选择组 
-SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 链式代理, DIRECT]}
+SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, DIRECT]}
 SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
 SelectSG: &SelectSG {type: select, proxies: [新国策略, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
 SelectJP: &SelectJP {type: select, proxies: [日本策略, 美国策略, 香港策略, 新国策略, 韩国策略, 台湾策略, 全球手动, DIRECT]}
@@ -37,8 +37,8 @@ ClassicalYaml: &ClassicalYaml {type: http, interval: 86400, behavior: classical,
 # 远程订阅组
 # 注意：请提供您的机场订阅链接，每个链接一行，并为每个机场命名，末尾的[A]为每个节点添加机场名称前缀，可自定义
 proxy-providers:
-  机场A: {<<: *PProviders, url: '机场订阅地址', override: {additional-prefix: '[A] '}}
-  机场B: {<<: *PProviders, url: '机场订阅地址', override: {additional-prefix: '[B] '}}
+  机场A: {<<: *PProviders, url: 'https://sub.443888.xyz/sub?uuid=6badea0e-6389-4059-a4e3-ddf7796cd301&encryption=none&security=tls&sni=tls.illian38.qzz.io&type=ws&host=tls.illian38.qzz.io&path=%2F%3Fed%3D2560', override: {additional-prefix: '[A] '}}
+  机场B: {<<: *PProviders, url: 'https://checkhere.top/link/7G4Ok2iIllx5BBC2?clash=1', override: {additional-prefix: '[B] '}}
 
 
 # 全局配置
@@ -217,7 +217,7 @@ dns:
   fake-ip-range: 198.18.0.1/16 # fake-ip 池设置
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
-    - RULE-SET:private_domain,fakeip_filter_domain,cn_domain
+    - RULE-SET:ConnCheck,Private,China,LAN
     - dns.alidns.com
     - cloudflare-dns.com
     - dns.google
@@ -235,7 +235,7 @@ dns:
       - "quic://dns.nextdns.io" # NextDNS（香港） DNS over DOQ
     "+.eu":
       - "quic://dns0.eu" # 公共（欧洲） DNS over DOQ
-    "RULE-SET:private_domain,cn_domain":
+    "RULE-SET:ConnCheck,Private,China,LAN":
       - "quic://dns.18bit.cn" # 18bit DNS over DOQ
       - "quic://dns.ipv4dns.com" # 清新云 DNS over DOQ
       - "quic://2025.dns1.top" # 关圣 DNS over DOQ
@@ -254,16 +254,13 @@ dns:
 proxy-groups:
   - {name: 默认代理,   <<: *SelectFB}
   - {name: 全球手动,   type: select, include-all: true, filter: *FilterAll}
+  - {name: AI,    <<: *SelectUS}
   - {name: Emby,     <<: *SelectDI}
-  - {name: AI平台,    <<: *SelectUS}
   - {name: TikTok,  <<: *SelectJP}
   - {name: NetFlix,  <<: *SelectProxy}
   - {name: Spotify,  <<: *SelectHK}
   - {name: Telegram,  <<: *SelectProxy}
   - {name: 游戏平台,  <<: *SelectDI}
-  - {name: 链式代理,  type: relay, proxies: [中转机, 落地机]}
-  - {name: 中转机,    type: select, proxies: [全球手动, 香港策略, 台湾策略, 日本策略, 新国策略, 韩国策略, 美国策略]}
-  - {name: 落地机,    type: select, include-all: true, filter: *FilterAll}
 
   # 地区策略
   - {name: 香港策略,  type: select, proxies: [香港自动, 香港均衡], include-all: true, filter: *FilterHK}
@@ -274,7 +271,7 @@ proxy-groups:
   - {name: 美国策略,  type: select, proxies: [美国自动, 美国均衡], include-all: true, filter: *FilterUS}
   - {name: 其他策略,  type: select, include-all: true, filter: *FilterOther}
   # 其他策略
-  - {name: 漏网之鱼,   type: select, proxies: [默认代理, DIRECT]}
+  - {name: 兜底分流,   type: select, proxies: [默认代理, DIRECT]}
   # 自动测速
   - {name: 香港自动,        <<: *UrlTest, filter: *FilterHK}
   - {name: 台湾自动,        <<: *UrlTest, filter: *FilterTW}
@@ -291,1019 +288,126 @@ proxy-groups:
   - {name: 美国均衡,   <<: *LoadBalanceCR, filter: *FilterUS}
 
 # 远程规则集
-rule-providers: 
-  # ios_rule_script 规则
-  apple_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Apple/Apple_OCD_Domain.mrs"
-    path: ./ruleset/Apple_Domain.mrs
+rule-providers:  
+  # 域名规则
+  Tracking:       {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
+  Advertising:    {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
+  Direct:         {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
+  Private:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
+  ConnCheck:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/ConnCheck.mrs}
+  Telegram:       {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
+  Twitter:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Twitter.mrs}  
+  SocialMedia:    {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/SocialMedia.mrs}
+  NewsMedia:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/NewsMedia.mrs}
+  Games:          {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Games.mrs}
+  Netflix:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Netflix.mrs}
+  YouTube:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/YouTube.mrs}
+  XPTV:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}  
+  Emby:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
+  Streaming:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}  
+  Google:         {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
+  Microsoft:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}  
+  Facebook:       {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Facebook.mrs}
+  Proxy:          {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Proxy.mrs}
+  China:          {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
+
+  # IP规则
+  AdvertisingIP:  {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
+  PrivateIP:      {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
+  TelegramIP:     {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}  
+  SocialMediaIP:  {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/SocialMedia.mrs}  
+  XPTVIP:         {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/XPTV.mrs}
+  EmbyIP:         {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Emby.mrs}
+  NetflixIP:      {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Netflix.mrs}
+  StreamingIP:    {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Streaming.mrs}  
+  GoogleIP:       {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Google.mrs}
+  FacebookIP:     {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Facebook.mrs}  
+  ProxyIP:        {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Proxy.mrs} 
+  ChinaIP:        {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
+
+  # yaml规则
+  LAN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/LAN_SPLITTER.yaml}
+  Direct_keli:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Direct.yaml}
+  Proxy_keli:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Proxy.yaml}
+  ChinaDownloadCDN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/ChinaDownloadCDN.yaml}
+  InternationalDownloadCDN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/InternationalDownloadCDN.yaml}
+  AI:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AI.yaml}
+  TikTok:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/TikTok.yaml}
+  iCloudChina:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/iCloudChina.yaml}
+  ApplePushNotificationService:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/ApplePushNotificationService.yaml}
+  AppleSoftwareUpdates:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppleSoftwareUpdates.yaml}
+  AppleID:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppleID.yaml}
+  AppStore:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppStore.yaml}
+  TestFlight:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/TestFlight.yaml}
+  SpeedtestInternational:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/SpeedtestInternational.yaml}
+  SpeedtestChina:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Tool/Clash/Rule/SpeedtestChina.yaml}
+
+  # 泄露规则
+  blockhttpdns_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs}
+  blockhttpdns_ip:        {<<: *IPcidrMrs, url: https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_IP.mrs}
+  stun_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/STUN/STUN_Domain.mrs}
 
-  apple_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Apple/Apple_OCD_IP.mrs"
-    path: ./ruleset/Apple_IP.mrs
-
-  chinamedia_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/ChinaMedia/ChinaMedia_OCD_Domain.mrs"
-    path: ./ruleset/ChinaMedia_Domain.mrs
-
-  chinamedia_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/ChinaMedia/ChinaMedia_OCD_IP.mrs"
-    path: ./ruleset/ChinaMedia_IP.mrs
-
-  netease_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/NetEase/NetEase_OCD_Domain.mrs"
-    path: ./ruleset/NetEase_Domain.mrs
-
-  netease_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/NetEase/NetEase_OCD_IP.mrs"
-    path: ./ruleset/NetEase_IP.mrs
-
-  jingdong_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/JingDong/JingDong_OCD_Domain.mrs"
-    path: ./ruleset/JingDong_Domain.mrs
-
-  58tongcheng_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/58TongCheng/58TongCheng_OCD_Domain.mrs"
-    path: ./ruleset/58TongCheng_Domain.mrs
-
-  alipay_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AliPay/AliPay_OCD_Domain.mrs"
-    path: ./ruleset/AliPay_Domain.mrs
-
-  pinduoduo_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Pinduoduo/Pinduoduo_OCD_Domain.mrs"
-    path: ./ruleset/Pinduoduo_Domain.mrs
-
-  alibaba_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Alibaba/Alibaba_OCD_Domain.mrs"
-    path: ./ruleset/Alibaba_Domain.mrs
-
-  alibaba_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Alibaba/Alibaba_OCD_IP.mrs"
-    path: ./ruleset/Alibaba_IP.mrs
-
-  115_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/115/115_OCD_Domain.mrs"
-    path: ./ruleset/115_Domain.mrs
-
-  4399_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/4399/4399_OCD_Domain.mrs"
-    path: ./ruleset/4399_Domain.mrs
-
-  pikpak_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/PikPak/PikPak_OCD_Domain.mrs"
-    path: ./ruleset/PikPak_Domain.mrs
-
-  youtubemusic_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/YouTubeMusic/YouTubeMusic_OCD_Domain.mrs"
-    path: ./ruleset/YouTubeMusic_Domain.mrs
-
-  discord_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Discord/Discord_OCD_Domain.mrs"
-    path: ./ruleset/Discord_Domain.mrs
-
-  openai_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/OpenAI/OpenAI_OCD_Domain.mrs"
-    path: ./ruleset/OpenAI_Domain.mrs
-
-  openai_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/OpenAI/OpenAI_OCD_IP.mrs"
-    path: ./ruleset/OpenAI_IP.mrs
-
-  github_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GitHub/GitHub_OCD_Domain.mrs"
-    path: ./ruleset/GitHub_Domain.mrs
-
-  bahamut_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Bahamut/Bahamut_OCD_Domain.mrs"
-    path: ./ruleset/Bahamut_Domain.mrs
-
-  hulu_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Hulu/Hulu_OCD_Domain.mrs"
-    path: ./ruleset/Hulu_Domain.mrs
-
-  tvb_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/TVB/TVB_OCD_Domain.mrs"
-    path: ./ruleset/TVB_Domain.mrs
-
-  niconico_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Niconico/Niconico_OCD_Domain.mrs"
-    path: ./ruleset/Niconico_Domain.mrs
-
-  abematv_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AbemaTV/AbemaTV_OCD_Domain.mrs"
-    path: ./ruleset/AbemaTV_Domain.mrs
-
-  12306_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/12306/12306_OCD_Domain.mrs"
-    path: ./ruleset/12306_Domain.mrs
-
-  abc_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/ABC/ABC_OCD_Domain.mrs"
-    path: ./ruleset/ABC_Domain.mrs
-
-  adobe_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Adobe/Adobe_OCD_Domain.mrs"
-    path: ./ruleset/Adobe_Domain.mrs
-
-  amazon_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Amazon/Amazon_OCD_Domain.mrs"
-    path: ./ruleset/Amazon_Domain.mrs
-
-  amazon_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Amazon/Amazon_OCD_IP.mrs"
-    path: ./ruleset/Amazon_IP.mrs
-
-  amazonprimevideo_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AmazonPrimeVideo/AmazonPrimeVideo_OCD_Domain.mrs"
-    path: ./ruleset/AmazonPrimeVideo_Domain.mrs
-
-  appledaily_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleDaily/AppleDaily_OCD_Domain.mrs"
-    path: ./ruleset/AppleDaily_Domain.mrs
-
-  appledev_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleDev/AppleDev_OCD_Domain.mrs"
-    path: ./ruleset/AppleDev_Domain.mrs
-
-  applefirmware_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleFirmware/AppleFirmware_OCD_Domain.mrs"
-    path: ./ruleset/AppleFirmware_Domain.mrs
-
-  applehardware_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleHardware/AppleHardware_OCD_Domain.mrs"
-    path: ./ruleset/AppleHardware_Domain.mrs
-
-  appleid_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleID/AppleID_OCD_Domain.mrs"
-    path: ./ruleset/AppleID_Domain.mrs
-
-  applemail_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleMail/AppleMail_OCD_Domain.mrs"
-    path: ./ruleset/AppleMail_Domain.mrs
-
-  applemedia_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleMedia/AppleMedia_OCD_Domain.mrs"
-    path: ./ruleset/AppleMedia_Domain.mrs
-
-  applemusic_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleMusic/AppleMusic_OCD_Domain.mrs"
-    path: ./ruleset/AppleMusic_Domain.mrs
-
-  applenews_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleNews/AppleNews_OCD_Domain.mrs"
-    path: ./ruleset/AppleNews_Domain.mrs
-
-  appleproxy_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleProxy/AppleProxy_OCD_Domain.mrs"
-    path: ./ruleset/AppleProxy_Domain.mrs
-
-  appletv_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppleTV/AppleTV_OCD_Domain.mrs"
-    path: ./ruleset/AppleTV_Domain.mrs
-
-  appstore_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/AppStore/AppStore_OCD_Domain.mrs"
-    path: ./ruleset/AppStore_Domain.mrs
-
-  baidu_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Baidu/Baidu_OCD_Domain.mrs"
-    path: ./ruleset/Baidu_Domain.mrs
-
-  baidutieba_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BaiDuTieBa/BaiDuTieBa_OCD_Domain.mrs"
-    path: ./ruleset/BaiDuTieBa_Domain.mrs
-
-  beats_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Beats/Beats_OCD_Domain.mrs"
-    path: ./ruleset/Beats_Domain.mrs
-
-  bing_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Bing/Bing_OCD_Domain.mrs"
-    path: ./ruleset/Bing_Domain.mrs
-
-  blizzard_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Blizzard/Blizzard_OCD_Domain.mrs"
-    path: ./ruleset/Blizzard_Domain.mrs
-
-  blizzard_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Blizzard/Blizzard_OCD_IP.mrs"
-    path: ./ruleset/Blizzard_IP.mrs
-
-  bytedance_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/ByteDance/ByteDance_OCD_Domain.mrs"
-    path: ./ruleset/ByteDance_Domain.mrs
-
-  bytedance_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/ByteDance/ByteDance_OCD_IP.mrs"
-    path: ./ruleset/ByteDance_IP.mrs
-
-  cctv_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/CCTV/CCTV_OCD_Domain.mrs"
-    path: ./ruleset/CCTV_Domain.mrs
-
-  claude_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Claude/Claude_OCD_Domain.mrs"
-    path: ./ruleset/Claude_Domain.mrs
-
-  copilot_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Copilot/Copilot_OCD_Domain.mrs"
-    path: ./ruleset/Copilot_Domain.mrs
-
-  copilot_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Copilot/Copilot_OCD_IP.mrs"
-    path: ./ruleset/Copilot_IP.mrs
-
-  dingtalk_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/DingTalk/DingTalk_OCD_Domain.mrs"
-    path: ./ruleset/DingTalk_Domain.mrs
-
-  docker_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Docker/Docker_OCD_Domain.mrs"
-    path: ./ruleset/Docker_Domain.mrs
-
-  douban_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/DouBan/DouBan_OCD_Domain.mrs"
-    path: ./ruleset/DouBan_Domain.mrs
-
-  douyin_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/DouYin/DouYin_OCD_Domain.mrs"
-    path: ./ruleset/DouYin_Domain.mrs
-
-  ea_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/EA/EA_OCD_Domain.mrs"
-    path: ./ruleset/EA_Domain.mrs
-
-  epic_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Epic/Epic_OCD_Domain.mrs"
-    path: ./ruleset/Epic_Domain.mrs
-
-  fitnessplus_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/FitnessPlus/FitnessPlus_OCD_Domain.mrs"
-    path: ./ruleset/FitnessPlus_Domain.mrs
-
-  gaode_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GaoDe/GaoDe_OCD_Domain.mrs"
-    path: ./ruleset/GaoDe_Domain.mrs
-
-  gemini_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Gemini/Gemini_OCD_Domain.mrs"
-    path: ./ruleset/Gemini_Domain.mrs
-
-  googledrive_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GoogleDrive/GoogleDrive_OCD_Domain.mrs"
-    path: ./ruleset/GoogleDrive_Domain.mrs
-
-  googleearth_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GoogleEarth/GoogleEarth_OCD_Domain.mrs"
-    path: ./ruleset/GoogleEarth_Domain.mrs
-
-  googlefcm_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GoogleFCM/GoogleFCM_OCD_Domain.mrs"
-    path: ./ruleset/GoogleFCM_Domain.mrs
-
-  googlefcm_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GoogleFCM/GoogleFCM_OCD_IP.mrs"
-    path: ./ruleset/GoogleFCM_IP.mrs
-
-  googlevoice_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GoogleVoice/GoogleVoice_OCD_Domain.mrs"
-    path: ./ruleset/GoogleVoice_Domain.mrs
-
-  hulujp_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/HuluJP/HuluJP_OCD_Domain.mrs"
-    path: ./ruleset/HuluJP_Domain.mrs
-
-  huluusa_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/HuluUSA/HuluUSA_OCD_Domain.mrs"
-    path: ./ruleset/HuluUSA_Domain.mrs
-
-  hupu_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Hupu/Hupu_OCD_Domain.mrs"
-    path: ./ruleset/Hupu_Domain.mrs
-
-  icloud_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/iCloud/iCloud_OCD_Domain.mrs"
-    path: ./ruleset/iCloud_Domain.mrs
-
-  imdb_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/IMDB/IMDB_OCD_Domain.mrs"
-    path: ./ruleset/IMDB_Domain.mrs
-
-  instagram_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Instagram/Instagram_OCD_Domain.mrs"
-    path: ./ruleset/Instagram_Domain.mrs
-
-  intel_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Intel/Intel_OCD_Domain.mrs"
-    path: ./ruleset/Intel_Domain.mrs
-
-  iqiyi_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/iQIYI/iQIYI_OCD_Domain.mrs"
-    path: ./ruleset/iQIYI_Domain.mrs
-
-  iqiyi_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/iQIYI/iQIYI_OCD_IP.mrs"
-    path: ./ruleset/iQIYI_IP.mrs
-
-  lastfm_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/LastFM/LastFM_OCD_Domain.mrs"
-    path: ./ruleset/LastFM_Domain.mrs
-
-  meituan_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/MeiTuan/MeiTuan_OCD_Domain.mrs"
-    path: ./ruleset/MeiTuan_Domain.mrs
-
-  microsoft_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Microsoft/Microsoft_OCD_Domain.mrs"
-    path: ./ruleset/Microsoft_Domain.mrs
-
-  microsoftedge_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/MicrosoftEdge/MicrosoftEdge_OCD_Domain.mrs"
-    path: ./ruleset/MicrosoftEdge_Domain.mrs
-
-  neteasemusic_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/NetEaseMusic/NetEaseMusic_OCD_Domain.mrs"
-    path: ./ruleset/NetEaseMusic_Domain.mrs
-
-  neteasemusic_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/NetEaseMusic/NetEaseMusic_OCD_IP.mrs"
-    path: ./ruleset/NetEaseMusic_IP.mrs
-
-  nga_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/NGA/NGA_OCD_Domain.mrs"
-    path: ./ruleset/NGA_Domain.mrs
-
-  onedrive_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/OneDrive/OneDrive_OCD_Domain.mrs"
-    path: ./ruleset/OneDrive_Domain.mrs
-
-  pandora_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Pandora/Pandora_OCD_Domain.mrs"
-    path: ./ruleset/Pandora_Domain.mrs
-
-  paypal_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/PayPal/PayPal_OCD_Domain.mrs"
-    path: ./ruleset/PayPal_Domain.mrs
-
-  playstation_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/PlayStation/PlayStation_OCD_Domain.mrs"
-    path: ./ruleset/PlayStation_Domain.mrs
-
-  qobuz_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Qobuz/Qobuz_OCD_Domain.mrs"
-    path: ./ruleset/Qobuz_Domain.mrs
-
-  qobuz_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Qobuz/Qobuz_OCD_IP.mrs"
-    path: ./ruleset/Qobuz_IP.mrs
-
-  reddit_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Reddit/Reddit_OCD_Domain.mrs"
-    path: ./ruleset/Reddit_Domain.mrs
-
-  rockstar_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Rockstar/Rockstar_OCD_Domain.mrs"
-    path: ./ruleset/Rockstar_Domain.mrs
-
-  scholar_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Scholar/Scholar_OCD_Domain.mrs"
-    path: ./ruleset/Scholar_Domain.mrs
-
-  sina_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Sina/Sina_OCD_Domain.mrs"
-    path: ./ruleset/Sina_Domain.mrs
-
-  siri_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Siri/Siri_OCD_Domain.mrs"
-    path: ./ruleset/Siri_Domain.mrs
-
-  smzdm_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/SMZDM/SMZDM_OCD_Domain.mrs"
-    path: ./ruleset/SMZDM_Domain.mrs
-
-  sony_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Sony/Sony_OCD_Domain.mrs"
-    path: ./ruleset/Sony_Domain.mrs
-
-  soundcloud_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/SoundCloud/SoundCloud_OCD_Domain.mrs"
-    path: ./ruleset/SoundCloud_Domain.mrs
-
-  speedtestInternational_domain:
-    <<: *ClassicalYaml
-    url: "https://kelee.one/Tool/Clash/Rule/SpeedtestInternational.yaml"
-    path: ./ruleset/SpeedtestInternational_Domain.yaml
-
-  speedtestChina_domain:
-    <<: *ClassicalYaml
-    url: "https://kelee.one/Tool/Clash/Rule/SpeedtestChina.yaml"
-    path: ./ruleset/SpeedtestChina.yaml
-
-  steam_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Steam/Steam_OCD_Domain.mrs"
-    path: ./ruleset/Steam_Domain.mrs
-
-  steamcn_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/SteamCN/SteamCN_OCD_Domain.mrs"
-    path: ./ruleset/SteamCN_Domain.mrs
-
-  supercell_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Supercell/Supercell_OCD_Domain.mrs"
-    path: ./ruleset/Supercell_Domain.mrs
-
-  supercell_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Supercell/Supercell_OCD_IP.mrs"
-    path: ./ruleset/Supercell_IP.mrs
-
-  systemota_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/SystemOTA/SystemOTA_OCD_Domain.mrs"
-    path: ./ruleset/SystemOTA_Domain.mrs
-
-  teams_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Teams/Teams_OCD_Domain.mrs"
-    path: ./ruleset/Teams_Domain.mrs
-
-  tencent_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Tencent/Tencent_OCD_Domain.mrs"
-    path: ./ruleset/Tencent_Domain.mrs
-
-  tencent_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Tencent/Tencent_OCD_IP.mrs"
-    path: ./ruleset/Tencent_IP.mrs
-
-  pixiv_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Pixiv/Pixiv_OCD_Domain.mrs"
-    path: ./ruleset/Pixiv_Domain.mrs
-
-  wikipedia_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Wikipedia/Wikipedia_OCD_Domain.mrs"
-    path: ./ruleset/Wikipedia_Domain.mrs
-
-  twitch_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Twitch/Twitch_OCD_Domain.mrs"
-    path: ./ruleset/Twitch_Domain.mrs
-
-  twitch_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Twitch/Twitch_OCD_IP.mrs"
-    path: ./ruleset/Twitch_IP.mrs
-
-  hbo_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/HBO/HBO_OCD_Domain.mrs"
-    path: ./ruleset/HBO_Domain.mrs
-
-  line_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Line/Line_OCD_Domain.mrs"
-    path: ./ruleset/Line_Domain.mrs
-
-  line_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Line/Line_OCD_IP.mrs"
-    path: ./ruleset/Line_IP.mrs
-
-  emby_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Emby/Emby_OCD_Domain.mrs"
-    path: ./ruleset/Emby_Domain.mrs
-
-  bilibili_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BiliBili/BiliBili_OCD_Domain.mrs"
-    path: ./ruleset/BiliBili_Domain.mrs
-
-  bilibili_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BiliBili/BiliBili_OCD_IP.mrs"
-    path: ./ruleset/BiliBili_IP.mrs
-
-  disney_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Disney/Disney_OCD_Domain.mrs"
-    path: ./ruleset/Disney_Domain.mrs
-
-  spotify_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Spotify/Spotify_OCD_Domain.mrs"
-    path: ./ruleset/Spotify_Domain.mrs
-
-  spotify_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/Spotify/Spotify_OCD_IP.mrs"
-    path: ./ruleset/Spotify_IP.mrs
-
-  youtube_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/YouTube/YouTube_OCD_Domain.mrs"
-    path: ./ruleset/YouTube_Domain.mrs
-
-  youtube_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/YouTube/YouTube_OCD_IP.mrs"
-    path: ./ruleset/YouTube_IP.mrs
-
-  globalmedia_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GlobalMedia/GlobalMedia_OCD_Domain.mrs"
-    path: ./ruleset/Media_Domain.mrs
-
-  globalmedia_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GlobalMedia/GlobalMedia_OCD_IP.mrs"
-    path: ./ruleset/Media_IP.mrs
-
-  blockhttpdns_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs"
-    path: ./ruleset/Category_httpdns_Domain.mrs
-
-  blockhttpdns_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_IP.mrs"
-    path: ./ruleset/Category_httpdns_IP.mrs
-    
-  # ------------------------------------------------------------
-  # MetaCubeX 规则
-  biliintl_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/biliintl.mrs"
-    path: ./ruleset/biliintl_Domain.mrs
-
-  18comic_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/18comic.mrs"
-    path: ./ruleset/18comic_Domain.mrs
-
-  tor_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tor.mrs"
-    path: ./ruleset/Tor_Domain.mrs
-
-  tor_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/tor.mrs"
-    path: ./ruleset/Tor_IP.mrs
-
-  fastly_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/fastly.mrs"
-    path: ./ruleset/Fastly_Domain.mrs
-
-  fastly_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/fastly.mrs"
-    path: ./ruleset/Fastly_IP.mrs
-
-  wise_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/wise.mrs"
-    path: ./ruleset/Wise_Domain.mrs
-
-  signal_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/signal.mrs"
-    path: ./ruleset/Signal_Domain.mrs
-
-  picacg_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/picacg.mrs"
-    path: ./ruleset/Picacg_Domain.mrs
-
-  hoyoverse_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/hoyoverse.mrs"
-    path: ./ruleset/Hoyoverse_Domain.mrs
-
-  mihoyo_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/mihoyo.mrs"
-    path: ./ruleset/Mihoyo_Domain.mrs
-
-  private_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.mrs"
-    path: ./ruleset/Private_Domain.mrs
-
-  private_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/private.mrs"
-    path: ./ruleset/Private_IP.mrs
-
-  kugou_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/kugou.mrs"
-    path: ./ruleset/Kugou_Domain.mrs
-
-  kuwo_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/kuwo.mrs"
-    path: ./ruleset/Kuwo_Domain.mrs
-
-  cloudflare_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cloudflare.mrs"
-    path: ./ruleset/Cloudflare_Domain.mrs
-
-  cloudflare_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cloudflare.mrs"
-    path: ./ruleset/Cloudflare_IP.mrs
-
-  telegram_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.mrs"
-    path: ./ruleset/Telegram_Domain.mrs
-
-  telegram_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs"
-    path: ./ruleset/Telegram_IP.mrs
-
-  facebook_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/facebook.mrs"
-    path: ./ruleset/Facebook_Domain.mrs
-
-  facebook_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/facebook.mrs"
-    path: ./ruleset/Facebook_IP.mrs
-
-  twitter_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitter.mrs"
-    path: ./ruleset/Twitter_Domain.mrs
-
-  twitter_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/twitter.mrs"
-    path: ./ruleset/Twitter_IP.mrs
-
-  netflix_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/netflix.mrs"
-    path: ./ruleset/Netflix_Domain.mrs
-
-  netflix_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/netflix.mrs"
-    path: ./ruleset/Netflix_IP.mrs
-
-  google_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs"
-    path: ./ruleset/Google_Domain.mrs
-
-  google_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs"
-    path: ./ruleset/Google_IP.mrs
-
-  # ------------------------------------------------------------
-  # 自定义 规则
-  advertising-ads_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/TG-Twilight/AWAvenue-Ads-Rule@main/Filters/AWAvenue-Ads-Rule-Clash.mrs"
-    path: ./ruleset/Advertising_ads_Domain.mrs
-
-  cn_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/clash-rules@release/direct.mrs"
-    path: ./ruleset/CN_Domain.mrs
-
-  cn_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/clash-rules@release/cncidr.mrs"
-    path: ./ruleset/CN_IP.mrs
-
-  4gtv_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/4GTV/4GTV_Domain.mrs"
-    path: ./ruleset/4GTV_Domain.mrs
-
-  wechat_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/WeChat/WeChat_Domain.mrs"
-    path: ./ruleset/WeChat_Domain.mrs
-
-  talkatone_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/qljsyph/ruleset-icon@main/mihomo/domain/talkatone.mrs"
-    path: ./ruleset/Talkatone_Domain.mrs
-
-  talkatone_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/qljsyph/ruleset-icon@main/mihomo/ipcidr/talkatone-ip.mrs"
-    path: ./ruleset/Talkatone_IP.mrs
-
-  tiktok_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/TikTok/TikTok_Domain.mrs"
-    path: ./ruleset/TikTok_Domain.mrs
-
-  tracker_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/Tracker/Tracker_Domain.mrs"
-    path: ./ruleset/Tracker_Domain.mrs
-
-  tracker_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/Tracker/Tracker_IP.mrs"
-    path: ./ruleset/Tracker_IP.mrs
-
-  stun_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/STUN/STUN_Domain.mrs"
-    path: ./ruleset/STUN_Domain.mrs
-
-  ehgallery_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/EHGallery/EHGallery_Domain.mrs"
-    path: ./ruleset/EHGallery_Domain.mrs
-
-  ehgallery_ip:
-    <<: *IPcidrMrs
-    url: "https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/EHGallery/EHGallery_IP.mrs"
-    path: ./ruleset/EHGallery_IP.mrs
-
-  fakeip_filter_domain:
-    <<: *DomainMrs
-    url: "https://jsd.onmicrosoft.cn/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs"
-    path: ./ruleset/Fakeip_Filter_Domain.mrs
 
 # 路由
 rules:
   # 常用必备
   - DOMAIN-KEYWORD,libvio,DIRECT
-  - SUB-RULE,(OR,((NETWORK,UDP),(NETWORK,TCP))),SUB-RULES
-  - MATCH,漏网之鱼
 
-sub-rules:
-  SUB-RULES:
-    - RULE-SET,advertising-ads_domain,REJECT
-    - OR,((RULE-SET,blockhttpdns_domain),(RULE-SET,blockhttpdns_ip,no-resolve)),REJECT
-    - OR,((AND,((NETWORK,TCP),(DST-PORT,5349))),(AND,((NETWORK,UDP),(DST-PORT,5350))),(AND,((NETWORK,UDP),(DST-PORT,5351))),(AND,((NETWORK,UDP),(DST-PORT,19302))),(RULE-SET,stun_domain),(DST-PORT,3478)),REJECT
-    - RULE-SET,appstore_domain,DIRECT # App Store 应用商店
-    - RULE-SET,applemail_domain,默认代理 # Apple Mail 邮件服务
-    - RULE-SET,applemusic_domain,DIRECT # Apple Music 音乐流媒体
-    - RULE-SET,applenews_domain,默认代理 # Apple News 新闻订阅
-    - RULE-SET,appledaily_domain,默认代理 # Apple Daily 新闻
-    - RULE-SET,fitnessplus_domain,默认代理 # Apple Fitness+ 健身订阅
-    - RULE-SET,appletv_domain,默认代理 # Apple TV+ 影视订阅服务
-    - RULE-SET,applemedia_domain,默认代理 # Apple 影音服务 (如 Podcasts)
-    - OR,((RULE-SET,appleproxy_domain),(DOMAIN-KEYWORD,smp-device),(DOMAIN-KEYWORD,testflight)),默认代理 # Apple 代理相关流量
-    - RULE-SET,biliintl_domain,默认代理 # 哔哩哔哩国际版
-    - OR,((RULE-SET,tiktok_domain),(DOMAIN-KEYWORD,tiktok)),TikTok # TikTok 短视频平台
-    - OR,((RULE-SET,youtube_domain),(DOMAIN-KEYWORD,youtube)),默认代理 # YouTube 视频平台
-    - RULE-SET,youtubemusic_domain,默认代理 # YouTube Music 音乐流媒体
-    - RULE-SET,disney_domain,默认代理 # Disney+ 影视订阅服务
-    - RULE-SET,bahamut_domain,默认代理 # 巴哈姆特 ACG 论坛
-    - RULE-SET,hulujp_domain,默认代理 # Hulu 日本版
-    - RULE-SET,huluusa_domain,默认代理 # Hulu 美国版
-    - RULE-SET,hulu_domain,默认代理 # Hulu 影视流媒体
-    - RULE-SET,tvb_domain,默认代理 # TVB 香港电视台
-    - RULE-SET,niconico_domain,默认代理 # Niconico 日本弹幕视频
-    - RULE-SET,abematv_domain,默认代理 # Abema 日本网络电视
-    - OR,((RULE-SET,amazonprimevideo_domain),(DOMAIN-KEYWORD,avoddashs)),默认代理 # 亚马逊 Prime Video 影视订阅
-    - RULE-SET,imdb_domain,默认代理 # IMDB 电影数据库
-    - RULE-SET,qobuz_domain,默认代理 # Qobuz 音乐流媒体
-    - RULE-SET,soundcloud_domain,默认代理 # SoundCloud 音乐分享平台
-    - RULE-SET,lastfm_domain,默认代理 # Last.fm 音乐推荐
-    - RULE-SET,4gtv_domain,默认代理 # 4GTV 媒体
-    - OR,((RULE-SET,spotify_domain),(DOMAIN-KEYWORD,spotify)),Spotify # Spotify 音乐流媒体
-    - OR,((RULE-SET,twitch_domain),(DOMAIN-KEYWORD,ttvnw)),默认代理 # Twitch 直播平台
-    - OR,((RULE-SET,pikpak_domain),(DOMAIN-KEYWORD,pikpak)),默认代理 # PikPak 云存储
-    - RULE-SET,discord_domain,默认代理 # Discord 语音聊天社区
-    - OR,((RULE-SET,telegram_domain),(DOMAIN-KEYWORD,nicegram)),Telegram # Telegram 即时通讯
-    - OR,((RULE-SET,github_domain),(DOMAIN-KEYWORD,github)),默认代理 # GitHub 代码托管平台
-    - OR,((RULE-SET,amazon_domain),(DOMAIN-KEYWORD,avoddashs)),默认代理 # 亚马逊电商
-    - OR,((RULE-SET,adobe_domain),(DOMAIN-KEYWORD,adobe)),默认代理 # Adobe 相关服务 (如 Creative Cloud)
-    - RULE-SET,docker_domain,默认代理 # Docker 容器服务
-    - OR,((RULE-SET,instagram_domain),(DOMAIN-KEYWORD,instagram)),默认代理 # Instagram 社交平台
-    - RULE-SET,paypal_domain,默认代理 # PayPal 在线支付
-    - OR,((RULE-SET,claude_domain),(RULE-SET,openai_domain),(RULE-SET,gemini_domain),(AND,((RULE-SET,copilot_domain),(NOT,((DOMAIN,www.bing.com))))),(DOMAIN-KEYWORD,openai),(DOMAIN-KEYWORD,openaicom-api),(DOMAIN-KEYWORD,colab),(DOMAIN-KEYWORD,developerprofiles),(DOMAIN-KEYWORD,generativelanguage)),AI平台 # Open AI
-    - RULE-SET,intel_domain,默认代理 # Intel 相关服务
-    - RULE-SET,speedtestInternational_domain,默认代理 # Speedtest 速度测试
-    - RULE-SET,reddit_domain,默认代理 # Reddit 论坛
-    - RULE-SET,ehgallery_domain,默认代理 #E站（E-Hentai / ExHentai）
-    - RULE-SET,pixiv_domain,默认代理 # P站（Pixiv插画社区）
-    - RULE-SET,wikipedia_domain,默认代理 # 维基百科，自由的百科全书
-    - RULE-SET,blizzard_domain,游戏平台 # 暴雪游戏 (如魔兽世界)
-    - OR,((RULE-SET,steam_domain),(DOMAIN-KEYWORD,steambroadcast),(DOMAIN-KEYWORD,steamstore),(DOMAIN-KEYWORD,steamuserimages)),游戏平台 # Steam 游戏商店及社区
-    - RULE-SET,rockstar_domain,游戏平台 # Rockstar 游戏 (如 GTA)
-    - RULE-SET,playstation_domain,游戏平台 # PlayStation 网络
-    - RULE-SET,epic_domain,游戏平台 # Epic Games 商店
-    - RULE-SET,supercell_domain,游戏平台 # Supercell (如部落冲突)
-    - RULE-SET,ea_domain,游戏平台 # EA 游戏 (如 FIFA)
-    - RULE-SET,sony_domain,游戏平台 # Sony 相关服务
-    - RULE-SET,hoyoverse_domain,默认代理 # 米哈游 (如原神)
-    - RULE-SET,18comic_domain,默认代理 # 禁漫天堂动漫网站
-    - RULE-SET,googledrive_domain,默认代理 # Google Drive 云存储
-    - RULE-SET,googleearth_domain,默认代理 # Google Earth 地图服务
-    - RULE-SET,googlefcm_domain,默认代理 # Google Firebase Cloud Messaging (推送)
-    - RULE-SET,googlevoice_domain,默认代理 # Google Voice 语音服务
-    - RULE-SET,scholar_domain,默认代理 # Google Scholar 学术搜索
-    - RULE-SET,hbo_domain,默认代理 # Home Box Office
-    - RULE-SET,line_domain,默认代理 # LINE （连我）
-    - RULE-SET,wise_domain,默认代理 # Wise 金融科技
-    - RULE-SET,signal_domain,默认代理 # Signal 加密即時通訊
-    - RULE-SET,picacg_domain,默认代理 # 哔咔哔咔漫画
-    - RULE-SET,pandora_domain,默认代理 # Pandora 珠宝相关
-    - OR,((RULE-SET,emby_domain,Emby),(DOMAIN-KEYWORD,emby)),Emby
-    - RULE-SET,talkatone_domain,默认代理 # Talkatone 电话
-    - OR,((RULE-SET,facebook_domain),(DOMAIN-KEYWORD,facebook),(DOMAIN-KEYWORD,fbcdn)),默认代理 # Facebook 社交网络
-    - OR,((RULE-SET,twitter_domain),(DOMAIN-KEYWORD,twitter)),默认代理 # Twitter 社交平台
-    - RULE-SET,netflix_domain,NetFlix # Netflix 影视流媒体
-    - RULE-SET,tor_domain,默认代理 # 洋葱浏览器
-    - RULE-SET,fastly_domain,默认代理 # Fastly 服务商
-    - RULE-SET,google_domain,默认代理 # Google 相关服务
-    - RULE-SET,globalmedia_domain,默认代理 # 媒体相关规则集，适用于流媒体解锁
-    - RULE-SET,cloudflare_domain,默认代理 # Cloudflare CDN 及安全服务
-    ############ 分割线 ############
-    - RULE-SET,icloud_domain,DIRECT # iCloud 云存储服务
-    - OR,((RULE-SET,siri_domain),(RULE-SET,systemota_domain),(RULE-SET,appleid_domain),(RULE-SET,appledev_domain),(RULE-SET,applefirmware_domain),(RULE-SET,applehardware_domain),(RULE-SET,apple_domain)),DIRECT
-    - RULE-SET,beats_domain,DIRECT # Beats 耳机及音频服务
-    - RULE-SET,douyin_domain,DIRECT # 抖音，短视频社交平台
-    - RULE-SET,cctv_domain,DIRECT # 央视影音，中国中央电视台相关服务
-    - RULE-SET,bilibili_domain,DIRECT # 哔哩哔哩，二次元弹幕视频网站
-    - RULE-SET,iqiyi_domain,DIRECT # 爱奇艺，在线视频平台
-    - RULE-SET,kugou_domain,DIRECT # 酷狗音乐，在线音乐平台
-    - RULE-SET,kuwo_domain,DIRECT # 酷我音乐，在线音乐平台
-    - RULE-SET,neteasemusic_domain,DIRECT # 网易云音乐，在线音乐流媒体
-    - RULE-SET,nga_domain,DIRECT # NGA 论坛 (游戏社区)
-    - OR,((RULE-SET,tracker_domain),(DOMAIN-KEYWORD,announce),(DOMAIN-KEYWORD,chdbits),(DOMAIN-KEYWORD,m-team),(DOMAIN-KEYWORD,torrent)),DIRECT # 私有跟踪器，通常用于 BT 下载和种子分享
-    - RULE-SET,baidutieba_domain,DIRECT # 百度贴吧，社区论坛
-    - RULE-SET,gaode_domain,DIRECT #  高德地图，地图导航服务
-    - RULE-SET,meituan_domain,DIRECT # 美团，外卖、团购、酒店预订等服务
-    - RULE-SET,smzdm_domain,DIRECT # 什么值得买，购物推荐和折扣信息
-    - RULE-SET,12306_domain,DIRECT # 12306，中国铁路售票官网
-    - OR,((RULE-SET,sina_domain),(DOMAIN-KEYWORD,weibo)),DIRECT # 新浪，包含新浪新闻、微博等
-    - RULE-SET,douban_domain,DIRECT # 豆瓣，书影音社区
-    - RULE-SET,hupu_domain,DIRECT # 虎扑，体育和潮流社区
-    - RULE-SET,abc_domain,DIRECT # 农业银行服务
-    - RULE-SET,baidu_domain,DIRECT # 百度，搜索引擎和相关服务
-    - RULE-SET,dingtalk_domain,DIRECT # 钉钉，阿里巴巴企业通讯工具
-    - RULE-SET,steamcn_domain,DIRECT # Steam 中国版，游戏社区和商店
-    - RULE-SET,speedtestChina_domain,DIRECT # Speedtest 速度测试
-    - RULE-SET,netease_domain,DIRECT # 网易，涵盖邮箱、游戏等服务
-    - RULE-SET,jingdong_domain,DIRECT # 京东，电商平台
-    - RULE-SET,58tongcheng_domain,DIRECT # 58同城，分类信息平台
-    - RULE-SET,alipay_domain,DIRECT # 支付宝，在线支付平台
-    - RULE-SET,pinduoduo_domain,DIRECT # 拼多多，社交电商平台
-    - OR,((RULE-SET,115_domain),(DOMAIN-SUFFIX,115vod.com)),DIRECT # 115 网盘，云存储服务
-    - RULE-SET,4399_domain,DIRECT # 4399，网页游戏和小游戏平台
-    - RULE-SET,wechat_domain,DIRECT # 微信聊天平台
-    - RULE-SET,mihoyo_domain,DIRECT # 米哈游国内
-    - OR,((RULE-SET,onedrive_domain),(DOMAIN-KEYWORD,1drv),(DOMAIN-KEYWORD,onedrive),(DOMAIN-KEYWORD,skydrive)),默认代理 # Microsoft OneDrive 云储存
-    - OR,((RULE-SET,bing_domain),(RULE-SET,teams_domain),(RULE-SET,microsoftedge_domain),(RULE-SET,microsoft_domain),(DOMAIN-KEYWORD,microsoft),(DOMAIN-KEYWORD,skydrive)),DIRECT
-    - RULE-SET,chinamedia_domain,DIRECT # 中国主流媒体
-    - RULE-SET,bytedance_domain,DIRECT # 字节跳动，包含抖音、今日头条等
-    - RULE-SET,tencent_domain,DIRECT # 腾讯相关服务，包括 QQ、腾讯云等
-    - RULE-SET,alibaba_domain,DIRECT # 阿里巴巴，涵盖云计算、电商等
-    # 国内服务
-    - RULE-SET,netease_ip,DIRECT,no-resolve
-    - RULE-SET,iqiyi_ip,DIRECT,no-resolve
-    - RULE-SET,neteasemusic_ip,DIRECT,no-resolve
-    - RULE-SET,bytedance_ip,DIRECT,no-resolve
-    - RULE-SET,tencent_ip,DIRECT,no-resolve
-    - RULE-SET,alibaba_ip,DIRECT,no-resolve
-    - RULE-SET,bilibili_ip,DIRECT,no-resolve
-    - RULE-SET,chinamedia_ip,DIRECT,no-resolve
-    # 国际服务
-    - RULE-SET,apple_ip,默认代理,no-resolve
-    - RULE-SET,spotify_ip,Spotify,no-resolve
-    - RULE-SET,twitch_ip,默认代理,no-resolve
-    - RULE-SET,telegram_ip,Telegram,no-resolve
-    - RULE-SET,amazon_ip,默认代理,no-resolve
-    - RULE-SET,copilot_ip,AI平台,no-resolve
-    - RULE-SET,openai_ip,AI平台,no-resolve
-    - RULE-SET,ehgallery_ip,默认代理,no-resolve
-    - RULE-SET,blizzard_ip,游戏平台,no-resolve
-    - RULE-SET,supercell_ip,游戏平台,no-resolve
-    - RULE-SET,googlefcm_ip,默认代理,no-resolve
-    - RULE-SET,line_ip,默认代理,no-resolve
-    - RULE-SET,talkatone_ip,默认代理,no-resolve
-    - RULE-SET,facebook_ip,默认代理,no-resolve
-    - RULE-SET,twitter_ip,默认代理,no-resolve
-    - RULE-SET,netflix_ip,NetFlix,no-resolve
-    - RULE-SET,tor_ip,默认代理,no-resolve
-    - RULE-SET,fastly_ip,默认代理,no-resolve
-    - RULE-SET,google_ip,默认代理,no-resolve
-    - RULE-SET,tracker_ip,DIRECT,no-resolve
-    - RULE-SET,qobuz_ip,默认代理,no-resolve
-    - RULE-SET,youtube_ip,默认代理,no-resolve
-    - RULE-SET,globalmedia_ip,默认代理,no-resolve
-    - RULE-SET,cloudflare_ip,默认代理,no-resolve
-    - OR,((AND,((RULE-SET,cn_domain),(RULE-SET,cn_ip))),(RULE-SET,cn_ip),(RULE-SET,private_domain),(RULE-SET,private_ip,no-resolve)),DIRECT
+  # 拦截规则
+  - RULE-SET,Tracking,REJECT
+  - RULE-SET,Advertising,REJECT
+  - OR,((RULE-SET,blockhttpdns_domain),(RULE-SET,blockhttpdns_ip,no-resolve)),REJECT
+  - OR,((AND,((NETWORK,TCP),(DST-PORT,5349))),(AND,((NETWORK,UDP),(DST-PORT,5350))),(AND,((NETWORK,UDP),(DST-PORT,5351))),(AND,((NETWORK,UDP),(DST-PORT,19302))),(RULE-SET,stun_domain),(DST-PORT,3478)),REJECT
+
+  # 域名规则
+  - RULE-SET,ConnCheck,DIRECT
+  - RULE-SET,LAN, DIRECT
+  - RULE-SET,Direct_keli,DIRECT
+  - RULE-SET,Private,DIRECT
+  - RULE-SET,Direct,DIRECT
+  - RULE-SET,XPTV,DIRECT
+  - RULE-SET,TestFlight,DIRECT
+  - RULE-SET,iCloudChina,DIRECT
+  - RULE-SET,ApplePushNotificationService,DIRECT
+  - RULE-SET,AppleSoftwareUpdates,DIRECT
+  - RULE-SET,AppleID,DIRECT
+  - RULE-SET,AppStore,DIRECT
+  - RULE-SET,ChinaDownloadCDN,DIRECT
+  - RULE-SET,SpeedtestChina,DIRECT
+  - RULE-SET,AI,AI
+  - RULE-SET,TikTok,TikTok
+  - RULE-SET,Emby,Emby
+  - RULE-SET,Netflix,NetFlix
+  - RULE-SET,SpeedtestInternational,默认代理
+  - RULE-SET,Proxy_keli,默认代理
+  - RULE-SET,InternationalDownloadCDN,默认代理
+  - RULE-SET,Twitter,默认代理
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,SocialMedia,默认代理
+  - RULE-SET,NewsMedia,默认代理
+  - RULE-SET,Games,游戏平台
+  - RULE-SET,YouTube,默认代理
+  - RULE-SET,Streaming,默认代理
+  - RULE-SET,Google,默认代理
+  - RULE-SET,Microsoft,默认代理
+  - RULE-SET,Proxy,默认代理
+  - RULE-SET,China,DIRECT
+
+  # IP规则
+  - RULE-SET,AdvertisingIP,REJECT,no-resolve
+  - RULE-SET,PrivateIP,DIRECT,no-resolve
+  - RULE-SET,XPTVIP,DIRECT,no-resolve
+  - RULE-SET,TelegramIP,默认代理,no-resolve
+  - RULE-SET,SocialMediaIP,默认代理,no-resolve
+  - RULE-SET,EmbyIP,Emby,no-resolve
+  - RULE-SET,NetflixIP,NetFlix,no-resolve
+  - RULE-SET,StreamingIP,默认代理,no-resolve
+  - RULE-SET,GoogleIP,默认代理,no-resolve
+  - RULE-SET,ProxyIP,默认代理,no-resolve
+  - RULE-SET,ChinaIP,DIRECT,no-resolve
+
+
+  - GEOIP,CN, DIRECT
+  - MATCH,兜底分流
+
 
