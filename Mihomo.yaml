@@ -340,7 +340,7 @@ rule-providers:
   AppStore:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppStore.yaml}
   TestFlight:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/TestFlight.yaml}
   SpeedtestInternational:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/SpeedtestInternational.yaml}
-  SpeedtestChina:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Tool/Clash/Rule/SpeedtestChina.yaml}
+  SpeedtestChina:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/SpeedtestChina.yaml}
 
   # 泄露规则
   blockhttpdns_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs}
