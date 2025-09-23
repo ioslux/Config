@@ -37,8 +37,13 @@ ClassicalYaml: &ClassicalYaml {type: http, interval: 86400, behavior: classical,
 # 远程订阅组
 # 注意：请提供您的机场订阅链接，每个链接一行，并为每个机场命名，末尾的[A]为每个节点添加机场名称前缀，可自定义
 proxy-providers:
-  机场A: {<<: *PProviders, url: '', override: {additional-prefix: '[A] '}}
-  机场B: {<<: *PProviders, url: '', override: {additional-prefix: '[B] '}}
+  #机场A: {<<: *PProviders, url: 'https://getsub.classelivre.eu.org/sub?force=auto', override: {additional-prefix: '[A] '}}
+  机场A: {<<: *PProviders, url: 'https://sub.keaeye.icu/sub?uuid=6badea0e-6389-4059-a4e3-ddf7796cd301&encryption=none&security=tls&sni=tls.illian38.qzz.io&type=ws&host=tls.illian38.qzz.io&path=%2F%3Fed%3D2560', override: {additional-prefix: '[A] '}}
+  #机场A: {<<: *PProviders, url: 'https://sub.443888.xyz/sub?uuid=6badea0e-6389-4059-a4e3-ddf7796cd301&encryption=none&security=tls&sni=tls.illian38.qzz.io&type=ws&host=tls.illian38.qzz.io&path=%2F%3Fed%3D2560', override: {additional-prefix: '[A] '}}
+  #机场B: {<<: *PProviders, url: 'https://fsl.nano.ip-ddns.com/', override: {additional-prefix: '[B] '}}
+  #机场C: {<<: *PProviders, url: 'http://38.59.246.49:38295/bfg3ubif/d6d90ac0405adfcdbce13cc12ea7a385', override: {additional-prefix: '[C] '}}
+  #机场D: {<<: *PProviders, url: 'https://srveoo.nano.ip-ddns.com/hysteria2/mihomo.yaml', override: {additional-prefix: '[D] '}}
+  #机场E: {<<: *PProviders, url: 'https://drive.google.com/uc?export=download&id=1LW_Aqr3xqVpu0godd_dlhZ6rG9PupUTL', override: {additional-prefix: '[E] '}}
 
 
 # 全局配置
@@ -73,8 +78,8 @@ geodata-loader: memconservative
 geox-url: # Geo 数据库配置，用于地理位置和 ASN 匹配
   geoip: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@release/geoip.dat" # GeoIP 数据库
   geosite: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@release/geosite.dat" # GeoSite 数据库
-  mmdb: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb" # GeoIP mmdb 数据库
-  asn: "https://jsd.onmicrosoft.cn/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb" # ASN 数据库
+  mmdb: "https://geodata.kelee.one/Country-Masaiki.mmdb" # GeoIP mmdb 数据库
+  asn: "https://geodata.kelee.one/GeoLite2-ASN-P3TERX.mmdb" # ASN 数据库
 geo-auto-update: false # 开启自动更新 Geo 数据库
 geo-update-interval: 24 # Geo 数据库更新间隔 (单位: 小时)
 # GeoSite 使用的匹配器实现，可用的实现：
@@ -217,7 +222,9 @@ dns:
   fake-ip-range: 198.18.0.1/16 # fake-ip 池设置
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
-    - RULE-SET:ConnCheck,Private,China,LAN
+    - RULE-SET:ConnCheck,Private,LAN
+    - "*"
+    - +.lan
     - dns.alidns.com
     - cloudflare-dns.com
     - dns.google
@@ -235,7 +242,7 @@ dns:
       - "quic://dns.nextdns.io" # NextDNS（香港） DNS over DOQ
     "+.eu":
       - "quic://dns0.eu" # 公共（欧洲） DNS over DOQ
-    "RULE-SET:ConnCheck,Private,China,LAN":
+    "RULE-SET:ConnCheck,Private,LAN":
       - "quic://dns.18bit.cn" # 18bit DNS over DOQ
       - "quic://dns.ipv4dns.com" # 清新云 DNS over DOQ
       - "quic://2025.dns1.top" # 关圣 DNS over DOQ
@@ -292,55 +299,41 @@ rule-providers:
   # 域名规则
   Tracking:       {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
   Advertising:    {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
-  Direct:         {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
   Private:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
   ConnCheck:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/ConnCheck.mrs}
-  Telegram:       {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
-  Twitter:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Twitter.mrs}  
-  SocialMedia:    {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/SocialMedia.mrs}
-  NewsMedia:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/NewsMedia.mrs}
-  Games:          {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Games.mrs}
-  Netflix:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Netflix.mrs}
-  YouTube:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/YouTube.mrs}
-  XPTV:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}  
-  Emby:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
-  Streaming:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}  
-  Google:         {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
-  Microsoft:      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}  
-  Facebook:       {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Facebook.mrs}
-  Proxy:          {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Proxy.mrs}
+  XPTV:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}    
   China:          {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
 
   # IP规则
   AdvertisingIP:  {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
   PrivateIP:      {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
-  TelegramIP:     {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}  
-  SocialMediaIP:  {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/SocialMedia.mrs}  
   XPTVIP:         {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/XPTV.mrs}
-  EmbyIP:         {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Emby.mrs}
-  NetflixIP:      {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Netflix.mrs}
-  StreamingIP:    {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Streaming.mrs}  
-  GoogleIP:       {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Google.mrs}
-  FacebookIP:     {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Facebook.mrs}  
-  ProxyIP:        {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Proxy.mrs} 
   ChinaIP:        {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
 
   # yaml规则
   LAN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/LAN_SPLITTER.yaml}
-  Direct_keli:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Direct.yaml}
-  Proxy_keli:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Proxy.yaml}
+  Direct:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Direct.yaml}
+  Proxy:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Proxy.yaml}
   ChinaDownloadCDN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/ChinaDownloadCDN.yaml}
   InternationalDownloadCDN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/InternationalDownloadCDN.yaml}
   AI:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AI.yaml}
   TikTok:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/TikTok.yaml}
+  SpeedtestInternational:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/SpeedtestInternational.yaml}
+  SpeedtestChina:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/SpeedtestChina.yaml}
+  Game:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Game.yaml}
+  Steam:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/Steam.yaml}
+  Netflix:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/Netflix.yaml}
+  Emby:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/EmbyServer.yaml}
   iCloudChina:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/iCloudChina.yaml}
   ApplePushNotificationService:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/ApplePushNotificationService.yaml}
   AppleSoftwareUpdates:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppleSoftwareUpdates.yaml}
   AppleID:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppleID.yaml}
   AppStore:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppStore.yaml}
   TestFlight:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/TestFlight.yaml}
-  SpeedtestInternational:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/SpeedtestInternational.yaml}
-  SpeedtestChina:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/SpeedtestChina.yaml}
+  Microsoft:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/Microsoft.yaml}
+  Google:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/Google.yaml}
+  Telegram:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Telegram.yaml}
+
 
   # 泄露规则
   blockhttpdns_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs}
@@ -362,9 +355,8 @@ rules:
   # 域名规则
   - RULE-SET,ConnCheck,DIRECT
   - RULE-SET,LAN, DIRECT
-  - RULE-SET,Direct_keli,DIRECT
-  - RULE-SET,Private,DIRECT
   - RULE-SET,Direct,DIRECT
+  - RULE-SET,Private,DIRECT
   - RULE-SET,XPTV,DIRECT
   - RULE-SET,TestFlight,DIRECT
   - RULE-SET,iCloudChina,DIRECT
@@ -379,35 +371,23 @@ rules:
   - RULE-SET,Emby,Emby
   - RULE-SET,Netflix,NetFlix
   - RULE-SET,SpeedtestInternational,默认代理
-  - RULE-SET,Proxy_keli,默认代理
+  - RULE-SET,Proxy,默认代理
   - RULE-SET,InternationalDownloadCDN,默认代理
-  - RULE-SET,Twitter,默认代理
   - RULE-SET,Telegram,Telegram
-  - RULE-SET,SocialMedia,默认代理
-  - RULE-SET,NewsMedia,默认代理
-  - RULE-SET,Games,游戏平台
-  - RULE-SET,YouTube,默认代理
-  - RULE-SET,Streaming,默认代理
+  - RULE-SET,Game,游戏平台
+  - RULE-SET,Steam,默认代理
   - RULE-SET,Google,默认代理
   - RULE-SET,Microsoft,默认代理
-  - RULE-SET,Proxy,默认代理
   - RULE-SET,China,DIRECT
+
 
   # IP规则
   - RULE-SET,AdvertisingIP,REJECT,no-resolve
   - RULE-SET,PrivateIP,DIRECT,no-resolve
   - RULE-SET,XPTVIP,DIRECT,no-resolve
-  - RULE-SET,TelegramIP,默认代理,no-resolve
-  - RULE-SET,SocialMediaIP,默认代理,no-resolve
-  - RULE-SET,EmbyIP,Emby,no-resolve
-  - RULE-SET,NetflixIP,NetFlix,no-resolve
-  - RULE-SET,StreamingIP,默认代理,no-resolve
-  - RULE-SET,GoogleIP,默认代理,no-resolve
-  - RULE-SET,ProxyIP,默认代理,no-resolve
-  - RULE-SET,ChinaIP,DIRECT,no-resolve
+  - RULE-SET,ChinaIP,DIRECT
 
-
-  - GEOIP,CN, DIRECT
+  - GEOIP,CN,DIRECT
   - MATCH,兜底分流
 
 
