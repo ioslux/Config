@@ -37,13 +37,13 @@ ClassicalYaml: &ClassicalYaml {type: http, interval: 86400, behavior: classical,
 # 远程订阅组
 # 注意：请提供您的机场订阅链接，每个链接一行，并为每个机场命名，末尾的[A]为每个节点添加机场名称前缀，可自定义
 proxy-providers:
-  #机场A: {<<: *PProviders, url: 'https://getsub.classelivre.eu.org/sub?force=auto', override: {additional-prefix: '[A] '}}
-  机场A: {<<: *PProviders, url: 'https://sub.keaeye.icu/sub?uuid=6badea0e-6389-4059-a4e3-ddf7796cd301&encryption=none&security=tls&sni=tls.illian38.qzz.io&type=ws&host=tls.illian38.qzz.io&path=%2F%3Fed%3D2560', override: {additional-prefix: '[A] '}}
-  #机场A: {<<: *PProviders, url: 'https://sub.443888.xyz/sub?uuid=6badea0e-6389-4059-a4e3-ddf7796cd301&encryption=none&security=tls&sni=tls.illian38.qzz.io&type=ws&host=tls.illian38.qzz.io&path=%2F%3Fed%3D2560', override: {additional-prefix: '[A] '}}
-  #机场B: {<<: *PProviders, url: 'https://fsl.nano.ip-ddns.com/', override: {additional-prefix: '[B] '}}
-  #机场C: {<<: *PProviders, url: 'http://38.59.246.49:38295/bfg3ubif/d6d90ac0405adfcdbce13cc12ea7a385', override: {additional-prefix: '[C] '}}
-  #机场D: {<<: *PProviders, url: 'https://srveoo.nano.ip-ddns.com/hysteria2/mihomo.yaml', override: {additional-prefix: '[D] '}}
-  #机场E: {<<: *PProviders, url: 'https://drive.google.com/uc?export=download&id=1LW_Aqr3xqVpu0godd_dlhZ6rG9PupUTL', override: {additional-prefix: '[E] '}}
+  #机场A: {<<: *PProviders, url: '', override: {additional-prefix: '[A] '}}
+  机场A: {<<: *PProviders, url: '', override: {additional-prefix: '[A] '}}
+  #机场A: {<<: *PProviders, url: '', override: {additional-prefix: '[A] '}}
+  #机场B: {<<: *PProviders, url: '', override: {additional-prefix: '[B] '}}
+  #机场C: {<<: *PProviders, url: '', override: {additional-prefix: '[C] '}}
+  #机场D: {<<: *PProviders, url: '', override: {additional-prefix: '[D] '}}
+  #机场E: {<<: *PProviders, url: '', override: {additional-prefix: '[E] '}}
 
 
 # 全局配置
