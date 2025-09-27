@@ -327,7 +327,7 @@ rule-providers:
   iCloudChina:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/iCloudChina.yaml}
   ApplePushNotificationService:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/ApplePushNotificationService.yaml}
   AppleSoftwareUpdates:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppleSoftwareUpdates.yaml}
-  AppleID:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppleID.yaml}
+  AppleID:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/AppleID.yaml}
   AppStore:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AppStore.yaml}
   TestFlight:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/TestFlight.yaml}
   Microsoft:        {<<: *ClassicalYaml, url: https://rule.kelee.one/Clash/Microsoft.yaml}
