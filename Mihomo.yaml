@@ -17,13 +17,13 @@ LoadBalanceCH: &LoadBalanceCH {type: load-balance, interval: 30, lazy: true, url
 LoadBalanceCR: &LoadBalanceCR {type: load-balance, interval: 30, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, strategy: round-robin, timeout: 2000, max-failed-times: 3, hidden: true, include-all: true}
 
 # 锚点 - 选择组 
-SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, DIRECT]}
-SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
-SelectSG: &SelectSG {type: select, proxies: [新国策略, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
-SelectJP: &SelectJP {type: select, proxies: [日本策略, 美国策略, 香港策略, 新国策略, 韩国策略, 台湾策略, 全球手动, DIRECT]}
-SelectUS: &SelectUS {type: select, proxies: [美国策略, 香港策略, 新国策略, 日本策略, 韩国策略, 台湾策略, 全球手动, DIRECT]}
-SelectProxy: &SelectProxy {type: select, proxies: [默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, DIRECT]}
-SelectDI: &SelectDI {type: select, proxies: [DIRECT, 默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略]}
+SelectFB: &SelectFB {type: select, proxies: [全球手动, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 其他策略, DIRECT]}
+SelectHK: &SelectHK {type: select, proxies: [香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 其他策略, DIRECT]}
+SelectSG: &SelectSG {type: select, proxies: [新国策略, 香港策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 其他策略, DIRECT]}
+SelectJP: &SelectJP {type: select, proxies: [日本策略, 美国策略, 香港策略, 新国策略, 韩国策略, 台湾策略, 全球手动, 其他策略, DIRECT]}
+SelectUS: &SelectUS {type: select, proxies: [美国策略, 香港策略, 新国策略, 日本策略, 韩国策略, 台湾策略, 全球手动, 其他策略, DIRECT]}
+SelectProxy: &SelectProxy {type: select, proxies: [默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 全球手动, 其他策略, DIRECT]}
+SelectDI: &SelectDI {type: select, proxies: [DIRECT, 默认代理, 香港策略, 新国策略, 日本策略, 韩国策略, 美国策略, 台湾策略, 其他策略]}
 # 锚点 - 规则集 
 DomainMrs: &DomainMrs {type: http, interval: 86400, behavior: domain, format: mrs, proxy: DIRECT}
 DomainText: &DomainText {type: http, interval: 86400, behavior: domain, format: text, proxy: DIRECT}
@@ -37,13 +37,8 @@ ClassicalYaml: &ClassicalYaml {type: http, interval: 86400, behavior: classical,
 # 远程订阅组
 # 注意：请提供您的机场订阅链接，每个链接一行，并为每个机场命名，末尾的[A]为每个节点添加机场名称前缀，可自定义
 proxy-providers:
-  #机场A: {<<: *PProviders, url: '', override: {additional-prefix: '[A] '}}
   机场A: {<<: *PProviders, url: '', override: {additional-prefix: '[A] '}}
-  #机场A: {<<: *PProviders, url: '', override: {additional-prefix: '[A] '}}
   #机场B: {<<: *PProviders, url: '', override: {additional-prefix: '[B] '}}
-  #机场C: {<<: *PProviders, url: '', override: {additional-prefix: '[C] '}}
-  #机场D: {<<: *PProviders, url: '', override: {additional-prefix: '[D] '}}
-  #机场E: {<<: *PProviders, url: '', override: {additional-prefix: '[E] '}}
 
 
 # 全局配置
