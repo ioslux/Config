@@ -329,6 +329,7 @@ rule-providers:
   fakeip_filter_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs} 
   dns_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/DNS/DNS_OCD_Domain.mrs} 
   cn_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/Kwisma/clash-rules@release/direct.mrs} 
+  tracker_domain:        {<<: *DomainMrs, url: https://jsd.onmicrosoft.cn/gh/Kwisma/rules@main/rules/mihomo/Tracker/Tracker_Domain.mrs} 
 # 路由
 rules:
   # 常用必备
