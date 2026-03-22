@@ -294,23 +294,23 @@ proxy-groups:
 # 远程规则集
 rule-providers:  
   # 域名规则
-  Tracking:       {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
-  Advertising:    {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
-  Private:        {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
-  XPTV:           {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}    
-  China:          {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
-  DIRECT_666OS:         {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
+  Tracking:       {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
+  Advertising:    {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
+  Private:        {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
+  XPTV:           {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}    
+  China:          {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
+  DIRECT_666OS:   {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
 
   # IP规则
-  AdvertisingIP:  {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
-  PrivateIP:      {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
-  XPTVIP:         {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/XPTV.mrs}
-  ChinaIP:        {<<: *IPcidrMrs, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
+  AdvertisingIP:  {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
+  PrivateIP:      {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
+  XPTVIP:         {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/XPTV.mrs}
+  ChinaIP:        {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
 
   # yaml规则
-  LAN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/LAN_SPLITTER.yaml}
-  Direct:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Direct.yaml}
-  Proxy:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Proxy.yaml}
+  LAN:            {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/LAN_SPLITTER.yaml}
+  Direct:         {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Direct.yaml}
+  Proxy:          {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/Proxy.yaml}
   ChinaDownloadCDN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/ChinaDownloadCDN.yaml}
   InternationalDownloadCDN:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/InternationalDownloadCDN.yaml}
   AI:        {<<: *ClassicalYaml, url: https://kelee.one/Tool/Clash/Rule/AI.yaml}
