@@ -295,14 +295,14 @@ proxy-groups:
 rule-providers:  
   # 域名规则
   Tracking:       {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
-  Advertising:    {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
+  #Advertising:    {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
   Private:        {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
   XPTV:           {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}    
   China:          {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
   DIRECT_666OS:   {<<: *DomainMrs, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
 
   # IP规则
-  AdvertisingIP:  {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
+  #AdvertisingIP:  {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
   PrivateIP:      {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
   XPTVIP:         {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/XPTV.mrs}
   ChinaIP:        {<<: *IPcidrMrs, url: https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
@@ -345,7 +345,7 @@ rules:
 
   # 拦截规则
   - RULE-SET,Tracking,REJECT
-  - RULE-SET,Advertising,REJECT
+  #- RULE-SET,Advertising,REJECT
   - OR,((RULE-SET,blockhttpdns_domain),(RULE-SET,blockhttpdns_ip,no-resolve)),REJECT
   - OR,((AND,((NETWORK,TCP),(DST-PORT,5349))),(AND,((NETWORK,UDP),(DST-PORT,5350))),(AND,((NETWORK,UDP),(DST-PORT,5351))),(AND,((NETWORK,UDP),(DST-PORT,19302))),(RULE-SET,stun_domain),(DST-PORT,3478)),REJECT
 
@@ -379,7 +379,7 @@ rules:
 
 
   # IP规则
-  - RULE-SET,AdvertisingIP,REJECT,no-resolve
+  #- RULE-SET,AdvertisingIP,REJECT,no-resolve
   - RULE-SET,PrivateIP,DIRECT,no-resolve
   - RULE-SET,XPTVIP,DIRECT,no-resolve
   - RULE-SET,ChinaIP,DIRECT
