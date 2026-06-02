@@ -5,7 +5,7 @@ BaseProvider: &BaseProvider {type: http, interval: 28800, proxy: DIRECT, health-
 # 策略组类型模板 - 定义不同的策略组基础配置
 BaseUT: &BaseUT {type: url-test, interval: 200, lazy: true, url: 'http://www.apple.com/library/test/success.html', hidden: true}
 BaseFB: &BaseFB {type: fallback, interval: 200, lazy: true, url: 'http://www.apple.com/library/test/success.html', hidden: true}
-UT: &UT {type: url-test, interval: 60, tolerance: 20, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all: true, proxies: [REJECT]}
+UT: &UT {type: url-test, interval: 60, tolerance: 20, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all: true}
 
 # 节点筛选正则表达式 - 基于地理位置和关键词过滤
 FilterHK: &FilterHK '^(?=.*((?i)🇭🇰|香港|港|(\b(HK|HKG|Hong Kong|HongKong|hongkong)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)(\d+)?\b))).*$'
