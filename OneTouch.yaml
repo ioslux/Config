@@ -5,7 +5,7 @@ BaseProvider: &BaseProvider {type: http, interval: 28800, proxy: DIRECT, health-
 # 策略组类型模板 - 定义不同的策略组基础配置
 BaseUT: &BaseUT {type: url-test, interval: 200, lazy: true, url: 'http://www.apple.com/library/test/success.html', hidden: true}
 BaseFB: &BaseFB {type: fallback, interval: 200, lazy: true, url: 'http://www.apple.com/library/test/success.html', hidden: true}
-UT: &UT {type: url-test, interval: 60, tolerance: 20, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all: true}
+#UT: &UT {type: url-test, interval: 60, tolerance: 20, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all: true}
 
 # 节点筛选正则表达式 - 基于地理位置和关键词过滤
 FilterHK: &FilterHK '^(?=.*((?i)🇭🇰|香港|港|(\b(HK|HKG|Hong Kong|HongKong|hongkong)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)(\d+)?\b))).*$'
@@ -127,7 +127,7 @@ proxy-groups:
   - {name: 社交平台,  <<: *SelectOne, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/PBS.png}  
   - {name: 国际媒体,  <<: *SelectOne, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/DomesticMedia.png}
   - {name: 国内流量,  <<: *SelectDC, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/China.png}
-  - {name: 自动选择,  <<: *UT, include-all: true, filter: *FilterAL, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Speedtest.png}
+  - {name: 自动选择,  type: url-test, include-all: true, filter: *FilterAL, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Speedtest.png}
   - {name: 手动选择,  type: select, include-all: true, filter: *FilterAL, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Clubhouse.png}
   - {name: 直接连接,  type: select, proxies: [DIRECT], hidden: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Direct.png}
   - {name: 香港自动,  <<: *BaseUT, filter: *FilterHK, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Hong_Kong.png}
