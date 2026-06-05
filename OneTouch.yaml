@@ -171,8 +171,8 @@ rules:
 
 # ==================== 规则集 ====================
 # 规则集行为模板
-BehaviorDN: &BehaviorDN {type: http, behavior: domain, format: mrs, interval: 86400}
-BehaviorIP: &BehaviorIP {type: http, behavior: ipcidr, format: mrs, interval: 86400}
+BehaviorDN: &BehaviorDN {type: http, behavior: domain, format: mrs, interval: 28800}
+BehaviorIP: &BehaviorIP {type: http, behavior: ipcidr, format: mrs, interval: 28800}
 rule-providers: 
   Private:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
   Direct:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
