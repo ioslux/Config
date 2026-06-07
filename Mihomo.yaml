@@ -180,7 +180,6 @@ rules:
   - RULE-SET,China,直接连接
 
   # IP规则
-  - RULE-SET,AdvertisingIP,REJECT,no-resolve
   - RULE-SET,PrivateIP,直接连接,no-resolve
   - RULE-SET,XPTVIP,直接连接,no-resolve
   - RULE-SET,AIIP,人工智能,no-resolve
@@ -227,7 +226,6 @@ rule-providers:
   China:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
 
   # IP规则
-  AdvertisingIP:  {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
   PrivateIP:      {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
   AIIP:           {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/AI.mrs}
   TelegramIP:     {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}  
