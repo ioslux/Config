@@ -13,7 +13,7 @@ proxy-providers:
 BaseFB: &BaseFB       {type: fallback, interval: 200, lazy: true, empty-fallback: REJECT, url: 'http://www.apple.com/library/test/success.html'}
 #BaseLB: &BaseLB       {type: load-balance, interval: 200, lazy: true, empty-fallback: REJECT, url: 'http://www.apple.com/library/test/success.html'}
 BaseSmart: &BaseSmart {type: url-test, interval: 200, lazy: true, empty-fallback: REJECT, url: 'http://www.apple.com/library/test/success.html', hidden: true, uselightgbm: true}
-UrlTest: &UrlTest {type: url-test, interval: 60, tolerance: 20, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, timeout: 2000, max-failed-times: 3}
+#UrlTest: &UrlTest {type: url-test, interval: 60, tolerance: 20, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, timeout: 2000, max-failed-times: 3}
 
 # 节点筛选正则表达式 - 基于地理位置和关键词过滤
 FilterHK: &FilterHK '^(?=.*(?i)(港|🇭🇰|HK|Hong|HKG))(?!.*(排除1|排除2|5x)).*$'
@@ -26,7 +26,7 @@ FilterTW: &FilterTW '^(?=.*(?i)(台|🇼🇸|🇹🇼|TW|tai|TPE|TSA|KHH))(?!.*(
 FilterAL: &FilterAL '^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'
 
 # 策略组代理列表模板 - 预定义的代理节点优先级排序
-SelectAL: &SelectAL {type: select, proxies: [自动选择, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 手动选择, 直接连接]}
+SelectAL: &SelectAL {type: select, proxies: [手动选择, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 直接连接]}
 OneSmart: &OneSmart {type: select, proxies: [一键智能, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 手动选择, 直接连接]}
 SelectDC: &SelectDC {type: select, proxies: [直接连接, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 一键智能, 手动选择]}
 
@@ -130,7 +130,7 @@ proxy-groups:
   - {name: 国外流量,  <<: *OneSmart, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Global.png}
   - {name: 国内流量,  <<: *SelectDC, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/China.png}
   - {name: 兜底流量,  <<: *OneSmart, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Final.png}
-  - {name: 自动选择,  <<: *UrlTest, filter: *FilterAL, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Static.png}
+#  - {name: 自动选择,  <<: *UrlTest, filter: *FilterAL, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Static.png}
   - {name: 手动选择,  type: select, include-all: true, filter: *FilterAL, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Clubhouse.png}
   - {name: 直接连接,  type: select, proxies: [DIRECT], hidden: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Direct.png}
 
