@@ -29,7 +29,7 @@ FilterAL: &FilterAL '^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|
 SelectAL: &SelectAL {type: select, proxies: [手动选择, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 直接连接]}
 OneSmart: &OneSmart {type: select, proxies: [一键智能, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 手动选择, 直接连接]}
 SelectDC: &SelectDC {type: select, proxies: [直接连接, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 一键智能, 手动选择]}
-
+SelectST: &SelectST {type: select, proxies: [一键智能]}
 
 # ==================== 核心配置 ====================
 # 基础配置
