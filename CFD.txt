@@ -1,0 +1,13 @@
+saas.sin.fan:443#SAAS
+11six24.com:443#11SIX
+cmin2.pjq.cc.cd:443#CMIN2
+tomleemusic.com.hk:443#TOMLEEMUSIC
+staticdelivery.nexusmods.com:443#NexusMods
+www.dbs.com:443#DBS
+converse.co.jp:443#CONVERSE
+edion.co.jp:443#EDION
+crocs.com.vn:443#CROCS
+www.victoriassecretbeauty.co.th:443#VSB
+www.bathandbodyworks.co.th:443#BBW
+decathlon.qa:443#DECATHLON
+www.nike.qa:443#NIKE
