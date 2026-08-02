@@ -7,6 +7,7 @@ crocs.com.vn:443#CROCS
 cmin2.pjq.cc.cd:443#CMIN2
 decathlon.qa:443#DECATHLON
 converse.co.jp:443#CONVERSE
+cf.danfeng.eu.org:443#DANFENG
 www.bathandbodyworks.co.th:443#BBW
 tomleemusic.com.hk:443#TOMLEEMUSIC
 www.victoriassecretbeauty.co.th:443#VSB
