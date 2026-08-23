@@ -9,7 +9,4 @@ www.leics.police.uk:443#LEICS
 cf.neko.cloudd.eu.org:443#NEKO
 www.bathandbodyworks.co.th:443#BBW
 tomleemusic.com.hk:443#TOMLEEMUSIC
-v6cf.5671234.xyz:443#综合   
-v6cu.5671234.xyz:443#联通   
-v6cm.5671234.xyz:443#移动   
-v6ct.5671234.xyz:443#电信
+
