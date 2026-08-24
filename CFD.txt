@@ -16,3 +16,14 @@ tomleemusic.com.hk:443#TOMLEEMUSIC
 45.221.113.47:40456#HKG
 38.207.172.166:29832#HKG
 45.221.113.47:40514#HKG
+185.194.54.15:443#SG-xTom Pty Ltd
+45.89.219.174:443#SG-xTom Pty Ltd
+185.37.255.184:443#SG-xTom Pty Ltd
+185.194.54.104:443#SG-xTom Pty Ltd
+45.94.40.84:8443#JP-xTom Japan Corporation
+45.94.40.102:443#JP-xTom Japan Corporation
+45.89.234.54:443#JP-xTom Japan Corporation
+103.53.80.44:443#JP-xTom Japan Corporation
+103.47.186.31:443#JP-xTom Japan Corporation
+103.47.186.122:443#JP-xTom Japan Corporation
+45.89.234.115:443#JP-xTom Japan Corporation
