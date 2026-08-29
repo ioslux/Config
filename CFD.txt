@@ -18,7 +18,6 @@ tomleemusic.com.hk:443#TOMLEEMUSIC
 185.194.54.15:443#SG-xTom Pty Ltd
 45.89.219.174:443#SG-xTom Pty Ltd
 185.37.255.184:443#SG-xTom Pty Ltd
-185.194.54.104:443#SG-xTom Pty Ltd
 45.94.40.84:8443#JP-xTom Japan Corporation
 45.94.40.102:443#JP-xTom Japan Corporation
 45.89.234.54:443#JP-xTom Japan Corporation
