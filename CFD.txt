@@ -5,7 +5,6 @@ edion.co.jp:443#EDION
 cmin2.pjq.cc.cd:443#CMIN2
 decathlon.qa:443#DECATHLON
 www.leics.police.uk:443#LEICS
-11.cf.3666888.xyz:443#3666888
 cf.neko.cloudd.eu.org:443#NEKO
 www.bathandbodyworks.co.th:443#BBW
 tomleemusic.com.hk:443#TOMLEEMUSIC
