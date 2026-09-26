@@ -12,10 +12,15 @@ proxy-providers:
   #备用服务商: {<<: *BaseProvider, url: '备用订阅源地址', override: {additional-prefix: '[备] '}}
 
 # 策略组类型模板 - 定义不同的策略组基础配置
-BaseFB: &BaseFB       {type: fallback, interval: 200, lazy: true, empty-fallback: REJECT, url: 'http://www.apple.com/library/test/success.html'}
-#BaseLB: &BaseLB       {type: load-balance, interval: 200, lazy: true, empty-fallback: REJECT, url: 'http://www.apple.com/library/test/success.html'}
+BaseUT: &BaseUT {type: url-test, interval: 200, lazy: true, url: 'http://www.apple.com/library/test/success.html'}
 BaseSmart: &BaseSmart {type: url-test, interval: 200, lazy: true, empty-fallback: REJECT, url: 'http://www.apple.com/library/test/success.html', hidden: true, uselightgbm: true}
-#UrlTest: &UrlTest {type: url-test, interval: 60, tolerance: 20, lazy: true, url: 'http://www.apple.com/library/test/success.html', disable-udp: false, timeout: 2000, max-failed-times: 3}
+
+
+# 策略组代理列表模板 - 预定义的代理节点优先级排序
+SelectAL: &SelectAL {type: select, proxies: [自动选择, 手动选择, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 直接连接]}
+OneSmart: &OneSmart {type: select, proxies: [一键智能, 自动选择, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 手动选择, 直接连接]}
+SelectDC: &SelectDC {type: select, proxies: [直接连接, 自动选择, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 一键智能, 手动选择]}
+SelectST: &SelectST {type: select, proxies: [一键智能]}
 
 # 节点筛选正则表达式 - 基于地理位置和关键词过滤
 FilterHK: &FilterHK '^(?=.*(?i)(港|🇭🇰|HK|Hong|HKG))(?!.*(排除1|排除2|5x)).*$'
@@ -24,14 +29,7 @@ FilterJP: &FilterJP '^(?=.*(?i)(日|🇯🇵|JP|Japan|NRT|HND|KIX|CTS|FUK))(?!.*
 FilterKR: &FilterKR '^(?=.*(?i)(韩|🇰🇷|韓|首尔|南朝鲜|KR|KOR|Korea|South))(?!.*(排除1|排除2|5x)).*$'
 FilterUS: &FilterUS '^(?=.*(?i)(美|🇺🇸|US|USA|SJC|JFK|LAX|ORD|ATL|DFW|SFO|MIA|SEA|IAD))(?!.*(排除1|排除2|5x)).*$'
 FilterTW: &FilterTW '^(?=.*(?i)(台|🇼🇸|🇹🇼|TW|tai|TPE|TSA|KHH))(?!.*(排除1|排除2|5x)).*$'
-#FilterOT: &FilterOT '^(?!.*(DIRECT|直接连接|🇭🇰|🇲🇴|🇹🇼|🇯🇵|🇰🇷|🇸🇬|🇺🇸|香港|港|澳门|台湾|台北|台|新北|彰化|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|韩国|首尔|春川|韩|韓|新加坡|新国|狮|坡|狮城|美|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|HK|hk|Hong Kong|HongKong|hongkong|HKG|MO|MAC|Oman|Macau|Macao|TW|Taiwan|TPE|KHH|JP|Japan|Tokyo|NRT|KIX|KR|Korea|KOR|Seoul|SG|SGP|Singapore|SIN|US|USA|United States|America|ATL|BUF|DFW|EWR|IAD|LAX|MCI|MIA|ORD|PHX|PDX|SEA|SJC))'
-FilterAL: &FilterAL '^(?=.*(.))(?!.*((?i) 群|♥|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|总计|到期|机场|下次|重置|重新|设置|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic)(\d+)?\b|(\d{4}-\d{2}-\d{2}|\dG)))).*$'
-
-# 策略组代理列表模板 - 预定义的代理节点优先级排序
-SelectAL: &SelectAL {type: select, proxies: [手动选择, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 直接连接]}
-OneSmart: &OneSmart {type: select, proxies: [一键智能, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 手动选择, 直接连接]}
-SelectDC: &SelectDC {type: select, proxies: [直接连接, 香港智能, 台湾智能, 日本智能, 狮城智能, 韩国智能, 美国智能, 一键智能, 手动选择]}
-SelectST: &SelectST {type: select, proxies: [一键智能]}
+FilterAL: &FilterAL '^(?=.*(.))(?!.*((?i) DIRECT|直接连接|群|♥|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|总计|到期|机场|下次|重置|重新|设置|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic)(\d+)?\b|(\d{4}-\d{2}-\d{2}|\dG)))).*$'
 
 # ==================== 核心配置 ====================
 # 基础配置
@@ -67,7 +65,7 @@ experimental:
 #external-ui-name: zashboard
 #external-ui: ui
 #external-controller: 127.0.0.1:9090
-&secret: 
+#&secret: 
 
 # 配置存储
 profile:
@@ -126,6 +124,7 @@ dns:
 proxy-groups:
   # 应用策略层 - Select手动选择，支持多场景应用优化，使用时默认，也可修改
   - {name: 一键智能,  <<: *SelectAL, icon: https://github.com/666OS/YYDS/raw/main/mihomo/image/mihomo.png}
+  - {name: 自动选择,     <<: *BaseUT, include-all: true, filter: *FilterAL, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Static.png}
   - {name: 手动选择,  type: select, include-all: true, filter: *FilterAL, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Clubhouse.png}
   - {name: 人工智能,  <<: *OneSmart, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/AI.png}
   - {name: 电报消息,  <<: *OneSmart, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Telegram_X.png}
@@ -133,11 +132,7 @@ proxy-groups:
   - {name: 国外流量,  <<: *OneSmart, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Global.png}
   - {name: 国内流量,  <<: *SelectDC, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/China.png}
   - {name: 兜底流量,  <<: *OneSmart, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Final.png}
-#  - {name: 自动选择,  <<: *UrlTest, filter: *FilterAL, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Static.png}
   - {name: 直接连接,  type: select, proxies: [DIRECT], hidden: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Direct.png}
-
-
-
 
  # 地理策略层 - Smart智能选择，政策权重数值越大优先级越高，修改为关键词节点，比如 优:2;中:1;备:0.5，默认为1，优>中>备，使用时请修改
   - {name: 香港智能,  <<: *BaseSmart, filter: *FilterHK, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Hong_Kong.png}
@@ -146,7 +141,6 @@ proxy-groups:
   - {name: 狮城智能,  <<: *BaseSmart, filter: *FilterSG, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Singapore.png}
   - {name: 韩国智能,  <<: *BaseSmart, filter: *FilterKR, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Korea.png}
   - {name: 美国智能,  <<: *BaseSmart, filter: *FilterUS, include-all: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/United_States.png}
-#  - {name: 欧洲智能,  <<: *BaseSmart, filter: *FilterEU, include-all: true, policy-priority: '优:2;中:1;备:0.5', icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/European_Union.png}
   
 
 # ==================== 规则路由 ====================
